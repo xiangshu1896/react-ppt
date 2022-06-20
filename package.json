@@ -1,0 +1,62 @@
+{
+  "name": "react-ppt",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "webpack server --config ./config/webpack.dev.config.js",
+    "build": "webpack --config ./config/webpack.prod.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiangshu1896/react-ppt"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rematch/core": "^2.2.0",
+    "antd": "^4.21.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^6.2.1",
+    "@types/react": "^18.0.14",
+    "@types/react-dom": "^18.0.5",
+    "@types/webpack-env": "^1.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^4.0.0",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "express": "^4.18.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "postcss-loader": "^7.0.0",
+    "prettier": "^2.7.1",
+    "sass": "^1.52.3",
+    "sass-loader": "^13.0.0",
+    "sass-resources-loader": "^2.2.5",
+    "source-map-loader": "^4.0.0",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.3",
+    "ts-import-plugin": "^2.0.0",
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.7.4",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.2",
+    "webpack-merge": "^5.8.0",
+    "webpackbar": "^5.0.2"
+  }
+}
