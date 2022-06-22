@@ -1,0 +1,11 @@
+.ppt-editor {
+  height: 100%;
+  .editor-content {
+    display: flex;
+    height: calc(100% - 85px);
+  }
+}
+
+.app {
+  height: 100vh;
+}

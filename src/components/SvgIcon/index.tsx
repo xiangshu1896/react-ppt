@@ -7,6 +7,11 @@ import { ReactComponent as Back } from '@/assets/icons/back.svg'
 import { ReactComponent as Next } from '@/assets/icons/next.svg'
 import { ReactComponent as Brush } from '@/assets/icons/brush.svg'
 import { ReactComponent as ClearFormat } from '@/assets/icons/clear-format.svg'
+import { ReactComponent as Add } from '@/assets/icons/add.svg'
+import { ReactComponent as Shape } from '@/assets/icons/shape.svg'
+import { ReactComponent as Text } from '@/assets/icons/text.svg'
+import { ReactComponent as Pic } from '@/assets/icons/pic.svg'
+import { ReactComponent as Table } from '@/assets/icons/table.svg'
 
 const SvgIcon = {
   Aming,
@@ -17,7 +22,12 @@ const SvgIcon = {
   Back,
   Next,
   Brush,
-  ClearFormat
+  ClearFormat,
+  Add,
+  Shape,
+  Text,
+  Pic,
+  Table
 }
 
 export default SvgIcon

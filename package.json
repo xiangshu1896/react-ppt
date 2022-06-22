@@ -15,15 +15,21 @@
   "dependencies": {
     "@rematch/core": "^2.2.0",
     "antd": "^4.21.3",
+    "lodash": "^4.17.21",
+    "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
-    "redux": "^4.2.0"
+    "react-sortablejs": "^6.1.4",
+    "redux": "^4.2.0",
+    "sortablejs": "^1.15.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
+    "@types/lodash": "^4.14.182",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
+    "@types/sortablejs": "^1.13.0",
     "@types/webpack-env": "^1.17.0",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",

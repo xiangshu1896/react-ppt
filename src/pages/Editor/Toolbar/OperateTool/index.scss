@@ -1,0 +1,14 @@
+.operate-tool {
+  .tool-icon {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    cursor: pointer;
+    &:hover {
+      background-color: $hoverColor;
+    }
+  }
+}

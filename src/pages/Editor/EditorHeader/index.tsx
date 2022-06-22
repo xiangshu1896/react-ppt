@@ -50,19 +50,31 @@ const EditorHeader = () => {
     <div className="editor-header">
       <div className="left">文档名称</div>
       <div className="right">
-        <Dropdown overlay={getMenu(folderMenuItems)} trigger={['click']}>
+        <Dropdown
+          overlay={getMenu(folderMenuItems)}
+          trigger={['click']}
+          overlayClassName="editor-header-dropdown"
+        >
           <div className="drop-content">
             <SvgIcon.Folder width="15" height="15" />
             文档
           </div>
         </Dropdown>
-        <Dropdown overlay={getMenu(editorMenuItems)} trigger={['click']}>
+        <Dropdown
+          overlay={getMenu(editorMenuItems)}
+          trigger={['click']}
+          overlayClassName="editor-header-dropdown"
+        >
           <div className="drop-content">
             <SvgIcon.Editor width="15" height="15" />
             编辑
           </div>
         </Dropdown>
-        <Dropdown overlay={getMenu(playMenuItems)} trigger={['click']}>
+        <Dropdown
+          overlay={getMenu(playMenuItems)}
+          trigger={['click']}
+          overlayClassName="editor-header-dropdown"
+        >
           <div className="drop-content">
             <SvgIcon.Play width="15" height="15" />
             演示

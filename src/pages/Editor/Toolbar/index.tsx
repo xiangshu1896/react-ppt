@@ -10,6 +10,7 @@ const Toolbar = () => {
       <OperateTool />
       <Divider type="vertical" />
       <AddTool />
+      <Divider type="vertical" />
     </div>
   )
 }
