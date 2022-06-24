@@ -1,16 +1,17 @@
 .left-bar {
   width: 180px;
   height: 100%;
-  border-right: 1px solid $borderColor;
+  border-right: 1px solid $lightBorder;
   background-color: $pageBackground;
   display: flex;
   flex-direction: column;
   .add-page {
     text-align: center;
-    margin-top: 10px;
+    padding: 10px 0;
+    background-color: #fff;
     .ant-btn {
       font-size: 12px;
-      color: $regularTextColor;
+      color: $regularText;
       &:first-child {
         width: 110px;
       }
@@ -19,24 +20,26 @@
   .page-list {
     flex: 1;
     overflow-y: auto;
-    .slide {
-      display: flex;
-      margin-top: 10px;
-      cursor: default;
-      .slide-num {
-        font-size: 12px;
-        color: $secondaryText;
-        width: 25px;
+    .sort-container {
+      .slide {
         display: flex;
-        justify-content: center;
-        align-items: flex-end;
-      }
-      .slide-content {
-        width: 130px;
-        height: 73px;
-        background: #fff;
-        border: 1px solid $lightBorder;
-        word-wrap: break-word;
+        margin: 10px 0;
+        cursor: default;
+        .slide-num {
+          font-size: 12px;
+          color: $secondaryText;
+          width: 25px;
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
+        }
+        .slide-content {
+          width: 130px;
+          height: 73px;
+          background: #fff;
+          border: 1px solid $lightBorder;
+          word-wrap: break-word;
+        }
       }
     }
     .checked-slide {

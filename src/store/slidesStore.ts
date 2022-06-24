@@ -1,7 +1,12 @@
 import { createModel } from '@rematch/core'
 import { Dispatch, RootState, RootModel } from '@/store'
-import { SlidesState, Slide } from '@/types/slides'
+import { Slide } from '@/types/slides'
 import { slides } from '@/mocks/slides'
+
+interface SlidesState {
+  slides: Slide[]
+  slideIndex: number
+}
 
 const slidesState: SlidesState = {
   slides,

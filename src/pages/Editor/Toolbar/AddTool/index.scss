@@ -8,7 +8,7 @@
     border-radius: 3px;
     cursor: pointer;
     &:hover {
-      background-color: $hoverColor;
+      background-color: $lightFill;
     }
   }
   .add-more {
@@ -27,7 +27,7 @@
     display: flex;
     align-items: center;
     font-size: 12px;
-    color: $regularTextColor;
+    color: $regularText;
     svg {
       margin-left: 5px;
     }

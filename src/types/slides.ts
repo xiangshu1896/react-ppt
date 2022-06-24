@@ -1,8 +1,3 @@
-export interface SlidesState {
-  slides: Slide[]
-  slideIndex: number
-}
-
 export const enum ElementTypes {
   TEXT = 'text',
   IMAGE = 'image',

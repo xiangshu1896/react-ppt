@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px $borderColor solid;
+  border-bottom: 1px $lightBorder solid;
   .left {
     padding-left: 30px;
   }
@@ -18,7 +18,7 @@
       cursor: pointer;
       padding: 0 10px;
       &:hover {
-        background-color: $hoverColor;
+        background-color: $lightFill;
       }
       svg {
         position: relative;
@@ -32,6 +32,6 @@
 .editor-header-dropdown {
   .ant-dropdown-menu-title-content {
     font-size: 13px;
-    color: $regularTextColor;
+    color: $regularText;
   }
 }

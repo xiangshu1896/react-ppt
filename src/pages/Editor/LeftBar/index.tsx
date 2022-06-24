@@ -60,6 +60,7 @@ const LeftBar = () => {
           setList={setList}
           onEnd={handleDragEnd}
           {...sortableOptions}
+          className="sort-container"
         >
           {slides.map((slide, slideIndex) => (
             <div
