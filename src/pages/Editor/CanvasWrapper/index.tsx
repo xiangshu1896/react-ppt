@@ -1,19 +1,36 @@
 import React, { useRef } from 'react'
+import SelectArea from './SelectArea'
 import useViewportSize from './hooks/useViewportSize'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import './index.scss'
+import useSelectArea from './hooks/useSelectArea'
 
 const CanvasWrapper = () => {
   const canvasRef = useRef<HTMLDivElement>(null)
-  const { viewportStyles } = useViewportSize(canvasRef)
+  const viewportRef = useRef<HTMLDivElement>(null)
+
   const dispatch = useDispatch<Dispatch>()
   const canvasScale = useSelector(
     (state: RootState) => state.mainStore.canvasScale
   )
 
+  const { viewportStyles } = useViewportSize(canvasRef)
+  const { isSelectVisible, selectPosition, updateSelectArea } =
+    useSelectArea(viewportRef)
+
+  const handleCanvasMouseDown = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    updateSelectArea(e)
+  }
+
   return (
-    <div className="canvas-wrapper" ref={canvasRef}>
+    <div
+      className="canvas-wrapper"
+      ref={canvasRef}
+      onMouseDown={handleCanvasMouseDown}
+    >
       <div
         className="viewport-wrapper"
         style={{
@@ -24,7 +41,13 @@ const CanvasWrapper = () => {
         }}
       >
         <div className="operates"></div>
-        <div className="viewport"></div>
+        <div
+          className="viewport"
+          style={{ transform: `scale(${canvasScale})` }}
+          ref={viewportRef}
+        >
+          {isSelectVisible && <SelectArea selectPosition={selectPosition} />}
+        </div>
       </div>
     </div>
   )

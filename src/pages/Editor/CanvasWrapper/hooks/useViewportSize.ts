@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from 'react'
+import { RefObject, useEffect } from 'react'
 import {
   VIEWPORT_WIDTH,
   VIEWPORT_HEIGHT,
@@ -6,17 +6,16 @@ import {
 } from '@/configs/canvas'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
+import { useSetState } from 'react-use'
 import _ from 'lodash'
 
 export default (canvasRef: RefObject<HTMLDivElement>) => {
-  const defaultCiewportStyles = {
+  const [viewportStyles, setViewportStyles] = useSetState({
     width: VIEWPORT_WIDTH,
     height: VIEWPORT_HEIGHT,
     left: 0,
     top: 0
-  }
-
-  const [viewportStyles, setViewportStyles] = useState(defaultCiewportStyles)
+  })
 
   const dispatch = useDispatch<Dispatch>()
   const canvasPercentage = useSelector(
@@ -34,7 +33,6 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
       const viewportActualWidth = canvasWidth * (canvasPercentage / 100)
       dispatch.mainStore.SET_CANVAS_SCALE(viewportActualWidth / VIEWPORT_WIDTH)
       setViewportStyles({
-        ...defaultCiewportStyles,
         left: (canvasWidth - viewportActualWidth) / 2,
         top: (canvasHeight - viewportActualWidth * VIEWPORT_RATIO) / 2
       })
@@ -44,7 +42,6 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
         viewportActualHeight / VIEWPORT_HEIGHT
       )
       setViewportStyles({
-        ...defaultCiewportStyles,
         left: (canvasWidth - viewportActualHeight / VIEWPORT_RATIO) / 2,
         top: (canvasHeight - viewportActualHeight) / 2
       })
@@ -53,9 +50,7 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
 
   useEffect(setViewportPosition, [canvasPercentage])
 
-  const resizeObserver = new ResizeObserver(
-    _.throttle(setViewportPosition, 100)
-  )
+  const resizeObserver = new ResizeObserver(_.throttle(setViewportPosition, 20))
 
   useEffect(() => {
     if (canvasRef.current) {
