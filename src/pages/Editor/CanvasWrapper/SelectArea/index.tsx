@@ -8,13 +8,15 @@ interface SelectAreaProps {
     width: number
     height: number
   }
+  selectQuadrant: number
 }
 
 const SelectArea: React.FC<SelectAreaProps> = props => {
   const { top, left, width, height } = props.selectPosition
+  const selectQuadrant = props.selectQuadrant
   return (
     <div
-      className="select-area"
+      className={`select-area quadrant-${selectQuadrant}`}
       style={{
         top: top + 'px',
         left: left + 'px',

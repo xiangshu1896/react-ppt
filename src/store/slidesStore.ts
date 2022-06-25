@@ -4,8 +4,8 @@ import { Slide } from '@/types/slides'
 import { slides } from '@/mocks/slides'
 
 interface SlidesState {
-  slides: Slide[]
-  slideIndex: number
+  slides: Slide[] // 配置的页面列表
+  slideIndex: number // 当前选中的页面
 }
 
 const slidesState: SlidesState = {

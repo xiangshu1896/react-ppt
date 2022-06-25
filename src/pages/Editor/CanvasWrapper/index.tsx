@@ -16,7 +16,7 @@ const CanvasWrapper = () => {
   )
 
   const { viewportStyles } = useViewportSize(canvasRef)
-  const { isSelectVisible, selectPosition, updateSelectArea } =
+  const { isSelectVisible, selectQuadrant, selectPosition, updateSelectArea } =
     useSelectArea(viewportRef)
 
   const handleCanvasMouseDown = (
@@ -46,7 +46,13 @@ const CanvasWrapper = () => {
           style={{ transform: `scale(${canvasScale})` }}
           ref={viewportRef}
         >
-          {isSelectVisible && <SelectArea selectPosition={selectPosition} />}
+          <div>1111</div>
+          {isSelectVisible && (
+            <SelectArea
+              selectPosition={selectPosition}
+              selectQuadrant={selectQuadrant}
+            />
+          )}
         </div>
       </div>
     </div>

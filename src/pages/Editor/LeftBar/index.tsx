@@ -10,6 +10,7 @@ import _ from 'lodash'
 
 const pageList = <div> </div>
 
+// 拖拽组件配置项
 const sortableOptions = {
   animation: 200,
   ghostClass: 'ghost-slide',

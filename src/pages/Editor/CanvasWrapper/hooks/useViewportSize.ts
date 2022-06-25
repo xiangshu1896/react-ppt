@@ -22,6 +22,7 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
     (state: RootState) => state.mainStore.canvasPercentage
   )
 
+  // 更新视图大小位置、缩放比
   const setViewportPosition = () => {
     if (!canvasRef.current) {
       return
@@ -48,8 +49,10 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
     }
   }
 
+  // 监听视图占比变化时更新
   useEffect(setViewportPosition, [canvasPercentage])
 
+  // 监听窗口变化时更新
   const resizeObserver = new ResizeObserver(_.throttle(setViewportPosition, 20))
 
   useEffect(() => {
