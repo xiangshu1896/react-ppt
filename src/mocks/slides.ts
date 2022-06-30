@@ -13,7 +13,16 @@ export const slides: Slide[] = [
         width: 100,
         height: 100,
         content: '测试文本',
-        defaultColor: 'black'
+        defaultColor: '#333'
+      },
+      {
+        id: 'gasdaggeqeh79ads7f8',
+        type: 'image',
+        left: 80,
+        top: 90,
+        width: 100,
+        height: 100,
+        url: 'adsf789a7f9a7sd'
       }
     ]
   },
@@ -21,14 +30,13 @@ export const slides: Slide[] = [
     id: 'agds0a70dg7a0sdg',
     elements: [
       {
-        id: '79a8sdg798asd',
-        type: 'text',
+        id: 'gasdh79ads7f8',
+        type: 'image',
         left: 80,
         top: 90,
         width: 100,
         height: 100,
-        content: '测试文本',
-        defaultColor: 'black'
+        url: 'adsf789a7f9a7sd'
       }
     ]
   },

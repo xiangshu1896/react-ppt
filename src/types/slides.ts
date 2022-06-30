@@ -38,7 +38,7 @@ interface PPTBaseElement {
   height: number
 }
 
-export type PPTElement = PPTTextElement
+export type PPTElement = PPTTextElement | PPTImageElement
 
 /**
  * 文本元素
@@ -53,4 +53,32 @@ export interface PPTTextElement extends PPTBaseElement {
   type: 'text'
   content: string
   defaultColor: string
+  outline?: PPTElementOutline
+}
+
+/**
+ * 图片元素
+ *
+ * type：类型（图片）
+ *
+ * url：图片地址
+ */
+export interface PPTImageElement extends PPTBaseElement {
+  type: 'image'
+  url: string
+}
+
+/**
+ * 元素边框
+ *
+ * style?: 边框样式（实线或虚线）
+ *
+ * width?: 边框宽度
+ *
+ * color?: 边框颜色
+ */
+export interface PPTElementOutline {
+  style?: 'dashed' | 'solid'
+  width?: number
+  color?: string
 }

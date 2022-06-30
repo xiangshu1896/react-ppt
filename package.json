@@ -23,6 +23,8 @@
     "react-sortablejs": "^6.1.4",
     "react-use": "^17.4.0",
     "redux": "^4.2.0",
+    "slate": "^0.81.1",
+    "slate-react": "^0.81.0",
     "sortablejs": "^1.15.0"
   },
   "devDependencies": {

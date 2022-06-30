@@ -5,6 +5,7 @@
   background-color: $pageBackground;
   display: flex;
   flex-direction: column;
+  z-index: 1;
   .add-page {
     text-align: center;
     padding: 10px 0;

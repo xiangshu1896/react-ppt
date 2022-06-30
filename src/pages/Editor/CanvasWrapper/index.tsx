@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import SelectArea from './SelectArea'
+import Element from './Element'
 import useViewportSize from './hooks/useViewportSize'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
@@ -14,6 +15,13 @@ const CanvasWrapper = () => {
   const canvasScale = useSelector(
     (state: RootState) => state.mainStore.canvasScale
   )
+
+  const slides = useSelector((state: RootState) => state.slidesStore.slides)
+  const slideIndex = useSelector(
+    (state: RootState) => state.slidesStore.slideIndex
+  )
+
+  const elementList = slides[slideIndex].elements
 
   const { viewportStyles } = useViewportSize(canvasRef)
   const { isSelectVisible, selectQuadrant, selectPosition, updateSelectArea } =
@@ -46,13 +54,15 @@ const CanvasWrapper = () => {
           style={{ transform: `scale(${canvasScale})` }}
           ref={viewportRef}
         >
-          <div>1111</div>
           {isSelectVisible && (
             <SelectArea
               selectPosition={selectPosition}
               selectQuadrant={selectQuadrant}
             />
           )}
+          {elementList.map(element => (
+            <Element element={element} key={element.id} />
+          ))}
         </div>
       </div>
     </div>
