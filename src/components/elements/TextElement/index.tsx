@@ -2,6 +2,7 @@ import React from 'react'
 import { PPTTextElement } from '@/types/slides'
 import ElementOutline from '../ElementOutline'
 import SlateEditor from '../SlateEditor'
+import './index.scss'
 
 interface TextComponentProps {
   element: PPTTextElement

@@ -18,8 +18,8 @@ export const slides: Slide[] = [
       {
         id: 'gasdaggeqeh79ads7f8',
         type: 'image',
-        left: 80,
-        top: 90,
+        left: 180,
+        top: 290,
         width: 100,
         height: 100,
         url: 'adsf789a7f9a7sd'

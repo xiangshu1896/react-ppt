@@ -1,5 +1,6 @@
 import React from 'react'
-import { PPTImageElement, PPTElement } from '@/types/slides'
+import { PPTImageElement } from '@/types/slides'
+import './index.scss'
 
 interface ImageComponentProps {
   element: PPTImageElement

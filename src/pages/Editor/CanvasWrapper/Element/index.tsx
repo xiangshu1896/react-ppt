@@ -19,7 +19,7 @@ const Element: React.FC<ElementProps> = props => {
   const elementType = props.element.type
   const ElementComponent = elementComponentMap[elementType]
   return (
-    <div className={`element ${'element-' + element.id}`}>
+    <div className={`element-item ${'element-' + element.id}`}>
       {
         // @ts-ignore
         <ElementComponent element={element} />
