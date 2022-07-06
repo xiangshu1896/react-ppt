@@ -1,11 +1,16 @@
-import { RefObject, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/store'
+import { RefObject, useEffect, useState } from 'react'
 import { useSetState } from 'react-use'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState, Dispatch } from '@/store'
 import { MIN_SELECT_RANGE } from '@/configs/canvas'
 import _ from 'lodash'
+import { PPTElement } from '@/types/slides'
+import { getElementRange } from '@/utils/element'
 
-export default (viewportRef: RefObject<HTMLDivElement>) => {
+export default (
+  elementList: PPTElement[],
+  viewportRef: RefObject<HTMLDivElement>
+) => {
   const [isSelectVisible, setIsSelectVisible] = useState(false)
   const [selectQuadrant, setSelectQuadrant] = useState(4)
   const [selectPosition, setSelectPosition] = useSetState({
@@ -15,9 +20,12 @@ export default (viewportRef: RefObject<HTMLDivElement>) => {
     height: 0
   })
 
+  const dispatch = useDispatch<Dispatch>()
   const canvasScale = useSelector(
     (state: RootState) => state.mainStore.canvasScale
   )
+
+  let isMouseDown = false
 
   // mousedown时触发更新选中范围操作
   const updateSelectArea = (
@@ -27,7 +35,7 @@ export default (viewportRef: RefObject<HTMLDivElement>) => {
       return
     }
 
-    let isMouseDown = true
+    isMouseDown = true
     const viewportRect = viewportRef.current.getBoundingClientRect()
 
     const startPageX = e.pageX
@@ -37,10 +45,12 @@ export default (viewportRef: RefObject<HTMLDivElement>) => {
     const top = (startPageY - viewportRect.y) / canvasScale
 
     // 确定选择框起始位置
-    setSelectPosition({
+    setSelectPosition(() => ({
       top,
-      left
-    })
+      left,
+      width: 0,
+      height: 0
+    }))
 
     setIsSelectVisible(false)
 
@@ -88,13 +98,61 @@ export default (viewportRef: RefObject<HTMLDivElement>) => {
 
       setIsSelectVisible(true)
     }, 10)
+  }
 
-    document.onmouseup = () => {
-      document.onmousemove = null
-      document.onmouseup = null
-      isMouseDown = false
-      setIsSelectVisible(false)
+  document.onmouseup = () => {
+    document.onmousemove = null
+    document.onmouseup = null
+    isMouseDown = false
+
+    const inRangeElementList: PPTElement[] = []
+
+    elementList.forEach(element => {
+      const selectPosWidth = selectPosition.width
+      const selectPosHeight = selectPosition.height
+      const selectPosTop = selectPosition.top
+      const selectPosLeft = selectPosition.left
+
+      const { minX, maxX, minY, maxY } = getElementRange(element)
+
+      let isInclude = false
+      if (selectQuadrant === 4) {
+        isInclude =
+          minX > selectPosLeft &&
+          maxX < selectPosWidth + selectPosLeft &&
+          minY > selectPosTop &&
+          maxX < selectPosHeight + selectPosTop
+      } else if (selectQuadrant === 1) {
+        isInclude =
+          minX > selectPosLeft &&
+          maxX < selectPosWidth + selectPosLeft &&
+          minY > selectPosTop - selectPosHeight &&
+          maxY < selectPosTop
+      } else if (selectQuadrant === 2) {
+        isInclude =
+          minX > selectPosLeft - selectPosWidth &&
+          maxX < selectPosLeft &&
+          minY > selectPosTop - selectPosHeight &&
+          maxY < selectPosTop
+      } else if (selectQuadrant === 3) {
+        isInclude =
+          minX > selectPosLeft - selectPosWidth &&
+          maxX < selectPosLeft &&
+          minY > selectPosTop &&
+          maxX < selectPosHeight + selectPosTop
+      }
+
+      if (isInclude) {
+        inRangeElementList.push(element)
+      }
+    })
+
+    const inRangeElementIdList = inRangeElementList.map(element => element.id)
+    if (inRangeElementIdList.length) {
+      dispatch.mainStore.SET_SELECTED_ELEMENT_ID_LIST(inRangeElementIdList)
     }
+
+    setIsSelectVisible(false)
   }
 
   return {

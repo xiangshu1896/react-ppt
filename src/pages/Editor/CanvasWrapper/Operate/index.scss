@@ -1,0 +1,25 @@
+.operate {
+  position: absolute;
+  z-index: 100;
+  user-select: none;
+  .operate-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border: 0 solid $blueColor1;
+    &.top {
+      border-top-width: 1px;
+    }
+    &.bottom {
+      border-bottom-width: 1px;
+    }
+    &.left {
+      border-left-width: 1px;
+    }
+    &.right {
+      border-right-width: 1px;
+    }
+  }
+}

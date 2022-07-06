@@ -14,10 +14,13 @@ const ImageComponent: React.FC<ImageComponentProps> = props => {
       style={{
         top: element.top,
         left: element.left,
-        width: element.width
+        width: element.width,
+        height: element.height
       }}
     >
-      <div className="rotate-wrapper">222</div>
+      <div className="rotate-wrapper">
+        <img className="image-self" src={element.url} />
+      </div>
     </div>
   )
 }

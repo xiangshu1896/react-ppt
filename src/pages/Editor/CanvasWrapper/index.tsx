@@ -1,17 +1,20 @@
 import React, { useRef } from 'react'
 import SelectArea from './SelectArea'
 import Element from './Element'
+import Operate from './Operate'
 import useViewportSize from './hooks/useViewportSize'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import './index.scss'
 import useSelectArea from './hooks/useSelectArea'
+import useSelectElement from './hooks/useSelectElement'
+import useOperateMain from '@/hooks/useOperateMain'
+import useDragElement from './hooks/useDragElement'
 
 const CanvasWrapper = () => {
   const canvasRef = useRef<HTMLDivElement>(null)
   const viewportRef = useRef<HTMLDivElement>(null)
 
-  const dispatch = useDispatch<Dispatch>()
   const canvasScale = useSelector(
     (state: RootState) => state.mainStore.canvasScale
   )
@@ -20,17 +23,28 @@ const CanvasWrapper = () => {
   const slideIndex = useSelector(
     (state: RootState) => state.slidesStore.slideIndex
   )
+  const selectedElementIdList = useSelector(
+    (state: RootState) => state.mainStore.selectedElementIdList
+  )
 
   const elementList = slides[slideIndex].elements
 
   const { viewportStyles } = useViewportSize(canvasRef)
   const { isSelectVisible, selectQuadrant, selectPosition, updateSelectArea } =
-    useSelectArea(viewportRef)
+    useSelectArea(elementList, viewportRef)
+  const { clearSelectedElementIdList } = useOperateMain()
+  const { dragElement } = useDragElement(elementList, canvasScale)
+  const { selectElement } = useSelectElement(dragElement)
 
   const handleCanvasMouseDown = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    updateSelectArea(e)
+    // 点击空白区域清空选中元素
+    clearSelectedElementIdList()
+    // 仅当鼠标左键down时触发
+    if (e.button === 0) {
+      updateSelectArea(e)
+    }
   }
 
   return (
@@ -48,7 +62,16 @@ const CanvasWrapper = () => {
           top: viewportStyles.top + 'px'
         }}
       >
-        <div className="operates"></div>
+        <div className="operates">
+          {elementList.map(element => (
+            <Operate
+              key={element.id}
+              element={element}
+              isSelected={selectedElementIdList.includes(element.id)}
+              isMultiSelected={selectedElementIdList.length > 1}
+            />
+          ))}
+        </div>
         <div
           className="viewport"
           style={{ transform: `scale(${canvasScale})` }}
@@ -61,7 +84,11 @@ const CanvasWrapper = () => {
             />
           )}
           {elementList.map(element => (
-            <Element element={element} key={element.id} />
+            <Element
+              element={element}
+              key={element.id}
+              selectElement={selectElement}
+            />
           ))}
         </div>
       </div>

@@ -5,8 +5,9 @@ import { RootState, Dispatch } from '@/store'
 import { ReactSortable, Sortable } from 'react-sortablejs'
 import './index.scss'
 import { Slide } from '@/types/slides'
-import { createBlankSlide } from '@/mocks/slides'
 import _ from 'lodash'
+import useOperateSlide from '@/hooks/useOperateSlide'
+import useOperateMain from '@/hooks/useOperateMain'
 
 const pageList = <div> </div>
 
@@ -28,7 +29,10 @@ const LeftBar = () => {
     (state: RootState) => state.slidesStore.slideIndex
   )
 
+  const { clearSelectedElementIdList } = useOperateMain()
+
   const selectSlide = (slideIndex: number) => {
+    clearSelectedElementIdList()
     dispatch.slidesStore.SET_SLIDE_INDEX(slideIndex)
   }
 
@@ -44,14 +48,15 @@ const LeftBar = () => {
     dispatch.slidesStore.SET_SLIDE_INDEX(newIndex)
   }
 
-  const handleAddSlidClick = () => {
-    dispatch.slidesStore.PUSH_NEW_SLIDE(createBlankSlide())
+  const { pushNewSlide } = useOperateSlide()
+  const handleAddSlideClick = () => {
+    pushNewSlide()
   }
 
   return (
     <div className="left-bar">
       <div className="add-page">
-        <Dropdown.Button overlay={pageList} onClick={handleAddSlidClick}>
+        <Dropdown.Button overlay={pageList} onClick={handleAddSlideClick}>
           添加页面
         </Dropdown.Button>
       </div>
@@ -74,9 +79,7 @@ const LeftBar = () => {
                 className={`slide-content ${
                   slideIndex === storeSlideIndex ? 'checked-slide' : ''
                 }`}
-              >
-                {slide.id}
-              </div>
+              ></div>
             </div>
           ))}
         </ReactSortable>

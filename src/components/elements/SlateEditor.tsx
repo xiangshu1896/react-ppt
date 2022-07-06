@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { createEditor, Descendant, BaseEditor } from 'slate'
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
+import useSelectElement from '@/pages/Editor/CanvasWrapper/hooks/useSelectElement'
+import { PPTTextElement } from '@/types/slides'
 
+// Slate的Typescript基础定义
 type CustomElement = { type: 'paragraph'; children: CustomText[] }
 type CustomText = { text: string }
 
@@ -13,26 +16,36 @@ declare module 'slate' {
   }
 }
 
-interface SlateEditorProps {}
+interface SlateEditorProps {
+  element: PPTTextElement
+  value: string
+  defaultColor: string
+  selectElement: (
+    e: React.MouseEvent<Element, MouseEvent>,
+    element: PPTTextElement,
+    startMove?: boolean
+  ) => void
+}
 
-const initialValue: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }]
-  }
-]
+const SlateEditor: React.FC<SlateEditorProps> = props => {
+  const { element, value, defaultColor, selectElement } = props
 
-const SlateEditor: React.FC<SlateEditorProps> = () => {
+  const initialValue: Descendant[] = [
+    {
+      type: 'paragraph',
+      children: [{ text: value }]
+    }
+  ]
+
   const [editor] = useState(() => withReact(createEditor()))
 
-  const handleEditorMousedown = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const handleSlateMD = (e: React.MouseEvent) => {
     e.stopPropagation()
+    selectElement(e, element, false)
   }
 
   return (
-    <div className="slate-editor" onMouseDown={e => handleEditorMousedown(e)}>
+    <div className="slate-editor" onMouseDown={handleSlateMD}>
       <Slate editor={editor} value={initialValue}>
         <Editable />
       </Slate>

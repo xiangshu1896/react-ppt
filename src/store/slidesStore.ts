@@ -2,6 +2,7 @@ import { createModel } from '@rematch/core'
 import { Dispatch, RootState, RootModel } from '@/store'
 import { Slide } from '@/types/slides'
 import { slides } from '@/mocks/slides'
+import _ from 'lodash'
 
 interface SlidesState {
   slides: Slide[] // 配置的页面列表
@@ -27,14 +28,6 @@ const slidesStore = createModel<RootModel>()({
       return {
         ...state,
         slideIndex
-      }
-    },
-    PUSH_NEW_SLIDE(state: SlidesState, slide: Slide) {
-      const slides = [...state.slides]
-      slides.splice(state.slideIndex + 1, 0, slide)
-      return {
-        ...state,
-        slides
       }
     }
   },
