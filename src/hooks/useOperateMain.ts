@@ -22,9 +22,15 @@ export default () => {
     dispatch.mainStore.SET_SELECTED_ELEMENT_ID_LIST([])
   }
 
+  const removeSelectedElementId = (id: string) => {
+    const newIdList = selectedElementIdList.filter(idItem => idItem !== id)
+    dispatch.mainStore.SET_SELECTED_ELEMENT_ID_LIST(newIdList)
+  }
+
   return {
     setSelectedElementId,
     pushSelectedElementId,
-    clearSelectedElementIdList
+    clearSelectedElementIdList,
+    removeSelectedElementId
   }
 }

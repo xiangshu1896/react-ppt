@@ -20,15 +20,10 @@ interface SlateEditorProps {
   element: PPTTextElement
   value: string
   defaultColor: string
-  selectElement: (
-    e: React.MouseEvent<Element, MouseEvent>,
-    element: PPTTextElement,
-    startMove?: boolean
-  ) => void
 }
 
 const SlateEditor: React.FC<SlateEditorProps> = props => {
-  const { element, value, defaultColor, selectElement } = props
+  const { element, value, defaultColor } = props
 
   const initialValue: Descendant[] = [
     {
@@ -39,9 +34,11 @@ const SlateEditor: React.FC<SlateEditorProps> = props => {
 
   const [editor] = useState(() => withReact(createEditor()))
 
+  const { selectElement } = useSelectElement()
+
   const handleSlateMD = (e: React.MouseEvent) => {
     e.stopPropagation()
-    selectElement(e, element, false)
+    selectElement(e, element)
   }
 
   return (

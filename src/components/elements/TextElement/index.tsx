@@ -6,20 +6,10 @@ import './index.scss'
 
 interface TextComponentProps {
   element: PPTTextElement
-  selectElement: (
-    e: React.MouseEvent<Element, MouseEvent>,
-    element: PPTTextElement,
-    startMove?: boolean
-  ) => void
 }
 
 const TextComponent: React.FC<TextComponentProps> = props => {
-  const { element, selectElement } = props
-
-  const handleElementTextComMD = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    selectElement(e, element, true)
-  }
+  const { element } = props
 
   return (
     <div
@@ -29,7 +19,6 @@ const TextComponent: React.FC<TextComponentProps> = props => {
         left: element.left,
         width: element.width
       }}
-      onMouseDown={handleElementTextComMD}
     >
       <div className="rotate-wrapper">
         <div
@@ -48,7 +37,6 @@ const TextComponent: React.FC<TextComponentProps> = props => {
             element={element}
             value={element.content}
             defaultColor={element.defaultColor}
-            selectElement={selectElement}
           />
         </div>
       </div>

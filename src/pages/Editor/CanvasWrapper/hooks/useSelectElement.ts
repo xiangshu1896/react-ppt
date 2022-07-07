@@ -4,28 +4,29 @@ import { RootState, Dispatch } from '@/store'
 import { PPTElement } from '@/types/slides'
 import useOperateMain from '@/hooks/useOperateMain'
 
-export default (
-  dragElement: (
-    e: React.MouseEvent<Element, MouseEvent>,
-    element: PPTElement
-  ) => void
-) => {
-  const { setSelectedElementId, pushSelectedElementId } = useOperateMain()
+export default () => {
+  const {
+    setSelectedElementId,
+    pushSelectedElementId,
+    removeSelectedElementId
+  } = useOperateMain()
+  const selectedElementIdList = useSelector(
+    (state: RootState) => state.mainStore.selectedElementIdList
+  )
 
-  const selectElement = (
-    e: React.MouseEvent,
-    element: PPTElement,
-    startMove = true
-  ) => {
-    if (e.ctrlKey || e.metaKey) {
+  const selectElement = (e: React.MouseEvent, element: PPTElement) => {
+    // 当前元素已被选中
+    if (selectedElementIdList.includes(element.id)) {
+      // 如果按下ctrl或command键，此时清除该元素的选中状态
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault()
+        removeSelectedElementId(element.id)
+      }
+    } else if (e.ctrlKey || e.metaKey) {
       e.preventDefault()
-      setSelectedElementId(element.id)
-    } else {
       pushSelectedElementId(element.id)
-    }
-
-    if (startMove) {
-      dragElement(e, element)
+    } else {
+      setSelectedElementId(element.id)
     }
   }
 

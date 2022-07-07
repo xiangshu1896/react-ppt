@@ -7,9 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import './index.scss'
 import useSelectArea from './hooks/useSelectArea'
-import useSelectElement from './hooks/useSelectElement'
 import useOperateMain from '@/hooks/useOperateMain'
-import useDragElement from './hooks/useDragElement'
 
 const CanvasWrapper = () => {
   const canvasRef = useRef<HTMLDivElement>(null)
@@ -33,8 +31,6 @@ const CanvasWrapper = () => {
   const { isSelectVisible, selectQuadrant, selectPosition, updateSelectArea } =
     useSelectArea(elementList, viewportRef)
   const { clearSelectedElementIdList } = useOperateMain()
-  const { dragElement } = useDragElement(elementList, canvasScale)
-  const { selectElement } = useSelectElement(dragElement)
 
   const handleCanvasMouseDown = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -84,11 +80,7 @@ const CanvasWrapper = () => {
             />
           )}
           {elementList.map(element => (
-            <Element
-              element={element}
-              key={element.id}
-              selectElement={selectElement}
-            />
+            <Element element={element} key={element.id} />
           ))}
         </div>
       </div>

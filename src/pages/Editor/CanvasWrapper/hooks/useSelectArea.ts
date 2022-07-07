@@ -11,6 +11,11 @@ export default (
   elementList: PPTElement[],
   viewportRef: RefObject<HTMLDivElement>
 ) => {
+  const [isMouseDown, setIsMouseDown] = useState(false)
+  const [startPos, setStartPos] = useState({
+    startPageX: 0,
+    startPageY: 0
+  })
   const [isSelectVisible, setIsSelectVisible] = useState(false)
   const [selectQuadrant, setSelectQuadrant] = useState(4)
   const [selectPosition, setSelectPosition] = useSetState({
@@ -25,85 +30,98 @@ export default (
     (state: RootState) => state.mainStore.canvasScale
   )
 
-  let isMouseDown = false
+  useEffect(() => {
+    if (isMouseDown) {
+      if (!viewportRef.current) {
+        return
+      }
+      const viewportRect = viewportRef.current.getBoundingClientRect()
+
+      const left = (startPos.startPageX - viewportRect.x) / canvasScale
+      const top = (startPos.startPageY - viewportRect.y) / canvasScale
+
+      // 确定选择框起始位置
+      setSelectPosition(() => ({
+        top,
+        left,
+        width: 0,
+        height: 0
+      }))
+
+      document.onmousemove = handleMove
+      document.onmouseup = handleUp
+    }
+  }, [isMouseDown])
+
+  useEffect(() => {
+    if (isMouseDown) {
+      document.onmouseup = handleUp
+    }
+  }, [selectPosition])
 
   // mousedown时触发更新选中范围操作
   const updateSelectArea = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    if (!viewportRef.current) {
+    setIsMouseDown(true)
+
+    setStartPos({
+      startPageX: e.pageX,
+      startPageY: e.pageY
+    })
+
+    setIsSelectVisible(false)
+  }
+
+  const handleMove = _.throttle((e: MouseEvent) => {
+    if (!isMouseDown) {
       return
     }
 
-    isMouseDown = true
-    const viewportRect = viewportRef.current.getBoundingClientRect()
+    const currentPageX = e.pageX
+    const currentPageY = e.pageY
 
-    const startPageX = e.pageX
-    const startPageY = e.pageY
+    const offsetWidth = (currentPageX - startPos.startPageX) / canvasScale
+    const offsetHeight = (currentPageY - startPos.startPageY) / canvasScale
 
-    const left = (startPageX - viewportRect.x) / canvasScale
-    const top = (startPageY - viewportRect.y) / canvasScale
+    // 选择框宽高需要取绝对值
+    const width = Math.abs(offsetWidth)
+    const height = Math.abs(offsetHeight)
 
-    // 确定选择框起始位置
-    setSelectPosition(() => ({
-      top,
-      left,
-      width: 0,
-      height: 0
-    }))
+    // 需大于最低框选大小范围
+    if (width < MIN_SELECT_RANGE || height < MIN_SELECT_RANGE) {
+      return
+    }
 
-    setIsSelectVisible(false)
+    // 根据偏移正负值设置框选出现的象限
+    let quadrant = 0
+    if (offsetWidth > 0 && offsetHeight > 0) {
+      quadrant = 4
+    }
+    if (offsetWidth < 0 && offsetHeight < 0) {
+      quadrant = 2
+    }
+    if (offsetWidth > 0 && offsetHeight < 0) {
+      quadrant = 1
+    }
+    if (offsetWidth < 0 && offsetHeight > 0) {
+      quadrant = 3
+    }
 
-    document.onmousemove = _.throttle((e: MouseEvent) => {
-      if (!isMouseDown) {
-        return
-      }
+    setSelectPosition({
+      width,
+      height
+    })
 
-      const currentPageX = e.pageX
-      const currentPageY = e.pageY
+    setSelectQuadrant(quadrant)
 
-      const offsetWidth = (currentPageX - startPageX) / canvasScale
-      const offsetHeight = (currentPageY - startPageY) / canvasScale
+    setIsSelectVisible(true)
+  }, 10)
 
-      // 选择框宽高需要取绝对值
-      const width = Math.abs(offsetWidth)
-      const height = Math.abs(offsetHeight)
-
-      // 需大于最低框选大小范围
-      if (width < MIN_SELECT_RANGE || height < MIN_SELECT_RANGE) {
-        return
-      }
-
-      // 根据偏移正负值设置框选出现的象限
-      let quadrant = 0
-      if (offsetWidth > 0 && offsetHeight > 0) {
-        quadrant = 4
-      }
-      if (offsetWidth < 0 && offsetHeight < 0) {
-        quadrant = 2
-      }
-      if (offsetWidth > 0 && offsetHeight < 0) {
-        quadrant = 1
-      }
-      if (offsetWidth < 0 && offsetHeight > 0) {
-        quadrant = 3
-      }
-
-      setSelectPosition({
-        width,
-        height
-      })
-
-      setSelectQuadrant(quadrant)
-
-      setIsSelectVisible(true)
-    }, 10)
-  }
-
-  document.onmouseup = () => {
+  const handleUp = () => {
     document.onmousemove = null
     document.onmouseup = null
-    isMouseDown = false
+    setIsMouseDown(false)
 
     const inRangeElementList: PPTElement[] = []
 
@@ -121,7 +139,7 @@ export default (
           minX > selectPosLeft &&
           maxX < selectPosWidth + selectPosLeft &&
           minY > selectPosTop &&
-          maxX < selectPosHeight + selectPosTop
+          maxY < selectPosHeight + selectPosTop
       } else if (selectQuadrant === 1) {
         isInclude =
           minX > selectPosLeft &&
@@ -139,7 +157,7 @@ export default (
           minX > selectPosLeft - selectPosWidth &&
           maxX < selectPosLeft &&
           minY > selectPosTop &&
-          maxX < selectPosHeight + selectPosTop
+          maxY < selectPosHeight + selectPosTop
       }
 
       if (isInclude) {

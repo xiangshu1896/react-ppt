@@ -8,6 +8,7 @@ interface ImageComponentProps {
 
 const ImageComponent: React.FC<ImageComponentProps> = props => {
   const { element } = props
+
   return (
     <div
       className="element-image-component"
@@ -19,7 +20,7 @@ const ImageComponent: React.FC<ImageComponentProps> = props => {
       }}
     >
       <div className="rotate-wrapper">
-        <img className="image-self" src={element.url} />
+        <img className="image-self" src={element.url} draggable={false} />
       </div>
     </div>
   )
