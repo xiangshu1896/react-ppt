@@ -2,24 +2,37 @@
   position: absolute;
   z-index: 100;
   user-select: none;
-  .operate-line {
+  .line {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border: 0 solid $blueColor1;
-    &.top {
-      border-top-width: 1px;
+    .operate-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border: 0 solid $blueColor1;
+      &.top {
+        border-top-width: 1px;
+      }
+      &.bottom {
+        border-bottom-width: 1px;
+      }
+      &.left {
+        border-left-width: 1px;
+      }
+      &.right {
+        border-right-width: 1px;
+      }
     }
-    &.bottom {
-      border-bottom-width: 1px;
-    }
-    &.left {
-      border-left-width: 1px;
-    }
-    &.right {
-      border-right-width: 1px;
+  }
+  .resize-box {
+    position: absolute;
+    .resize-box-item {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 1px solid $secondaryText;
+      background-color: #fff;
     }
   }
 }
