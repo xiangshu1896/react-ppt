@@ -1,16 +1,19 @@
 import { createModel } from '@rematch/core'
 import { Dispatch, RootState, RootModel } from '@/store'
+import { CreatingElement } from '@/types/edit'
 
 interface MainState {
   canvasScale: number // 视图缩放比
   canvasPercentage: number // 视图展示比例
   selectedElementIdList: string[] // 选中的元素列表
+  creatingElement: CreatingElement | null // 正在创建的元素
 }
 
 const mainState: MainState = {
   canvasScale: 1,
   canvasPercentage: 90,
-  selectedElementIdList: []
+  selectedElementIdList: [],
+  creatingElement: null
 }
 
 const mainStore = createModel<RootModel>()({
@@ -29,6 +32,12 @@ const mainStore = createModel<RootModel>()({
       return {
         ...state,
         selectedElementIdList
+      }
+    },
+    SET_CREATING_ELEMENT(state: MainState, creatingElement: CreatingElement) {
+      return {
+        ...state,
+        creatingElement
       }
     }
   },

@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import SelectArea from './SelectArea'
 import Element from './Element'
 import Operate from './Operate'
+import ElementCreateSelection from './ElementCreateSelection'
 import useViewportSize from './hooks/useViewportSize'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
@@ -23,6 +24,9 @@ const CanvasWrapper = () => {
   )
   const selectedElementIdList = useSelector(
     (state: RootState) => state.mainStore.selectedElementIdList
+  )
+  const creatingElement = useSelector(
+    (state: RootState) => state.mainStore.creatingElement
   )
 
   const elementList = slides[slideIndex].elements
@@ -49,6 +53,7 @@ const CanvasWrapper = () => {
       ref={canvasRef}
       onMouseDown={handleCanvasMouseDown}
     >
+      {creatingElement && <ElementCreateSelection />}
       <div
         className="viewport-wrapper"
         style={{
