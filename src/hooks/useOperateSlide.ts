@@ -29,8 +29,15 @@ export default () => {
     dispatch.slidesStore.SET_SLIDES(resSlides)
   }
 
+  const addNewElement = (element: PPTElement) => {
+    const elements = [...slides[slideIndex].elements]
+    elements.push(element)
+    setCurrentSlideNewEls(elements)
+  }
+
   return {
     pushNewSlide,
-    setCurrentSlideNewEls
+    setCurrentSlideNewEls,
+    addNewElement
   }
 }

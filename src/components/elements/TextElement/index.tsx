@@ -27,11 +27,11 @@ const TextComponent: React.FC<TextComponentProps> = props => {
             color: element.defaultColor
           }}
         >
-          <ElementOutline
+          {/* <ElementOutline
             width={element.width}
             height={element.height}
             outline={element.outline}
-          />
+          /> */}
           {/* 集成富文本 */}
           <SlateEditor
             element={element}

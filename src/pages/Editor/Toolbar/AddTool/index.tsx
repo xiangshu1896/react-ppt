@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState, Dispatch } from '@/store'
 import { Dropdown, Space, Menu } from 'antd'
 import SvgIcon from '@/components/SvgIcon'
 import './index.scss'
@@ -47,6 +49,21 @@ const addMoreMenu = (
 )
 
 const AddTool = () => {
+  const dispatch = useDispatch<Dispatch>()
+
+  const drawText = () => {
+    dispatch.mainStore.SET_CREATING_ELEMENT({
+      type: 'text'
+    })
+  }
+
+  const drawShape = () => {
+    dispatch.mainStore.SET_CREATING_ELEMENT({
+      type: 'shape',
+      data: {}
+    })
+  }
+
   return (
     <div className="add-tool">
       <Space>
@@ -60,10 +77,10 @@ const AddTool = () => {
             插入
           </div>
         </Dropdown>
-        <div className="tool-icon">
+        <div className="tool-icon" onClick={drawText}>
           <SvgIcon.Text width="15" height="15" />
         </div>
-        <div className="tool-icon">
+        <div className="tool-icon" onClick={drawShape}>
           <SvgIcon.Shape width="15" height="15" />
         </div>
       </Space>

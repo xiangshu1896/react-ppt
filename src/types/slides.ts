@@ -82,3 +82,10 @@ export interface PPTElementOutline {
   width?: number
   color?: string
 }
+
+export interface CommonElementPosition {
+  left: number
+  top: number
+  width: number
+  height: number
+}

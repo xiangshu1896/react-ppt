@@ -18,3 +18,10 @@ export type CreatingElement =
   | CreatingTextElement
   | CreatingShapeElement
   | CreatingLineElement
+
+export interface DrawPosition {
+  startPageX: number
+  startPageY: number
+  endPageX: number
+  endPageY: number
+}

@@ -9,6 +9,7 @@ import { RootState, Dispatch } from '@/store'
 import './index.scss'
 import useSelectArea from './hooks/useSelectArea'
 import useOperateMain from '@/hooks/useOperateMain'
+import useInsertElement from './hooks/useInsertElement'
 
 const CanvasWrapper = () => {
   const canvasRef = useRef<HTMLDivElement>(null)
@@ -32,13 +33,14 @@ const CanvasWrapper = () => {
   const elementList = slides[slideIndex].elements
 
   const { viewportStyles } = useViewportSize(canvasRef)
-  const { isSelectVisible, selectQuadrant, selectPosition, updateSelectArea } =
-    useSelectArea(elementList, viewportRef)
+  const { isSelectVisible, selectPosition, updateSelectArea } = useSelectArea(
+    elementList,
+    viewportRef
+  )
+  const { insertElement } = useInsertElement(viewportRef)
   const { clearSelectedElementIdList } = useOperateMain()
 
-  const handleCanvasMouseDown = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const handleCanvasMouseDown = (e: React.MouseEvent) => {
     // 点击空白区域清空选中元素
     clearSelectedElementIdList()
     // 仅当鼠标左键down时触发
@@ -53,7 +55,9 @@ const CanvasWrapper = () => {
       ref={canvasRef}
       onMouseDown={handleCanvasMouseDown}
     >
-      {creatingElement && <ElementCreateSelection />}
+      {creatingElement && (
+        <ElementCreateSelection insertElement={insertElement} />
+      )}
       <div
         className="viewport-wrapper"
         style={{
@@ -78,12 +82,7 @@ const CanvasWrapper = () => {
           style={{ transform: `scale(${canvasScale})` }}
           ref={viewportRef}
         >
-          {isSelectVisible && (
-            <SelectArea
-              selectPosition={selectPosition}
-              selectQuadrant={selectQuadrant}
-            />
-          )}
+          {isSelectVisible && <SelectArea selectPosition={selectPosition} />}
           {elementList.map(element => (
             <Element element={element} key={element.id} />
           ))}

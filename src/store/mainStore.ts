@@ -34,7 +34,10 @@ const mainStore = createModel<RootModel>()({
         selectedElementIdList
       }
     },
-    SET_CREATING_ELEMENT(state: MainState, creatingElement: CreatingElement) {
+    SET_CREATING_ELEMENT(
+      state: MainState,
+      creatingElement: CreatingElement | null
+    ) {
       return {
         ...state,
         creatingElement
