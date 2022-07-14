@@ -18,6 +18,7 @@ export default (viewportRef: React.RefObject<HTMLDivElement>) => {
       return
     }
 
+    // 计算元素位置
     const minX = Math.min(drawPos.startPageX, drawPos.endPageX)
     const minY = Math.min(drawPos.startPageY, drawPos.endPageY)
     const width = Math.abs(drawPos.startPageX - drawPos.endPageX) / canvasScale

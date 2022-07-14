@@ -4,14 +4,13 @@ import { RootState, Dispatch } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { MIN_MOVE_RANGE } from '@/configs/canvas'
 import _ from 'lodash'
-import useOperateSlide from '@/hooks/useOperateSlide'
 
 export default () => {
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [startPageX, setStartPageX] = useState(0)
   const [startPageY, setStartPageY] = useState(0)
 
-  const { setCurrentSlideNewEls } = useOperateSlide()
+  const dispatch = useDispatch<Dispatch>()
   const selectedElementIdList = useSelector(
     (state: RootState) => state.mainStore.selectedElementIdList
   )
@@ -65,7 +64,7 @@ export default () => {
       }
     })
 
-    setCurrentSlideNewEls(resElementList)
+    dispatch.slidesStore.SET_CURRENT_SLIDE_NEW_ELS(resElementList)
   }
 
   const handleUpElement = () => {

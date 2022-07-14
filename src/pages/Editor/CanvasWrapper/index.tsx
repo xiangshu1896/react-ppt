@@ -8,17 +8,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import './index.scss'
 import useSelectArea from './hooks/useSelectArea'
-import useOperateMain from '@/hooks/useOperateMain'
 import useInsertElement from './hooks/useInsertElement'
 
 const CanvasWrapper = () => {
   const canvasRef = useRef<HTMLDivElement>(null)
   const viewportRef = useRef<HTMLDivElement>(null)
 
+  const dispatch = useDispatch<Dispatch>()
   const canvasScale = useSelector(
     (state: RootState) => state.mainStore.canvasScale
   )
-
   const slides = useSelector((state: RootState) => state.slidesStore.slides)
   const slideIndex = useSelector(
     (state: RootState) => state.slidesStore.slideIndex
@@ -38,11 +37,10 @@ const CanvasWrapper = () => {
     viewportRef
   )
   const { insertElement } = useInsertElement(viewportRef)
-  const { clearSelectedElementIdList } = useOperateMain()
 
   const handleCanvasMouseDown = (e: React.MouseEvent) => {
     // 点击空白区域清空选中元素
-    clearSelectedElementIdList()
+    dispatch.mainStore.CLEAR_SELECTED_ELEMENT_ID_LIST()
     // 仅当鼠标左键down时触发
     if (e.button === 0) {
       updateSelectArea(e)

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { MIN_MOVE_RANGE, MIN_ELEMENT_SIZE } from '@/configs/canvas'
-import useOperateSlide from '@/hooks/useOperateSlide'
 import { PPTElement } from '@/types/slides'
 
 export default () => {
@@ -11,7 +10,7 @@ export default () => {
   const [startPageY, setStartPageY] = useState(0)
   const [resizePos, setResizePos] = useState('')
 
-  const { setCurrentSlideNewEls } = useOperateSlide()
+  const dispatch = useDispatch<Dispatch>()
   const selectedElementIdList = useSelector(
     (state: RootState) => state.mainStore.selectedElementIdList
   )
@@ -34,6 +33,7 @@ export default () => {
 
   const dragResizeBox = (e: React.MouseEvent, pos: string) => {
     setIsMouseDown(true)
+    dispatch.mainStore.SET_IS_SCALING(true)
     setResizePos(pos)
     setStartPageX(e.pageX)
     setStartPageY(e.pageY)
@@ -184,11 +184,12 @@ export default () => {
       }
     })
 
-    setCurrentSlideNewEls(resElementList)
+    dispatch.slidesStore.SET_CURRENT_SLIDE_NEW_ELS(resElementList)
   }
 
   const handleUpResizeBox = () => {
     setIsMouseDown(false)
+    dispatch.mainStore.SET_IS_SCALING(false)
 
     document.onmousemove = null
     document.onmouseup = null

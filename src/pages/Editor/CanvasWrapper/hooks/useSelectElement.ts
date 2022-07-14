@@ -2,14 +2,9 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { PPTElement } from '@/types/slides'
-import useOperateMain from '@/hooks/useOperateMain'
 
 export default () => {
-  const {
-    setSelectedElementId,
-    pushSelectedElementId,
-    removeSelectedElementId
-  } = useOperateMain()
+  const dispatch = useDispatch<Dispatch>()
   const selectedElementIdList = useSelector(
     (state: RootState) => state.mainStore.selectedElementIdList
   )
@@ -20,13 +15,13 @@ export default () => {
       // 如果按下ctrl或command键，此时清除该元素的选中状态
       if (e.ctrlKey || e.metaKey) {
         e.preventDefault()
-        removeSelectedElementId(element.id)
+        dispatch.mainStore.REMOVE_SELECTED_ELEMENT_ID(element.id)
       }
     } else if (e.ctrlKey || e.metaKey) {
       e.preventDefault()
-      pushSelectedElementId(element.id)
+      dispatch.mainStore.PUSH_SELECTED_ELEMENT_ID(element.id)
     } else {
-      setSelectedElementId(element.id)
+      dispatch.mainStore.SET_SELECTED_ELEMENT_ID(element.id)
     }
   }
 

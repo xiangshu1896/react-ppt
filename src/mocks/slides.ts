@@ -11,7 +11,7 @@ export const slides: Slide[] = [
         left: 80,
         top: 90,
         width: 100,
-        height: 100,
+        height: 42,
         content: '测试文本',
         defaultColor: '#333'
       },

@@ -1,8 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { PPTElement, CommonElementPosition } from '@/types/slides'
-import useOperateSlide from './useOperateSlide'
-import useOperateMain from './useOperateMain'
 import { nanoid } from 'nanoid'
 
 export default () => {
@@ -11,13 +9,10 @@ export default () => {
     (state: RootState) => state.mainStore.creatingElement
   )
 
-  const { addNewElement } = useOperateSlide()
-  const { setSelectedElementId } = useOperateMain()
-
   // 创建（插入）一个元素并将其设置为被选中元素
   const createElement = (element: PPTElement) => {
-    addNewElement(element)
-    setSelectedElementId(element.id)
+    dispatch.slidesStore.ADD_NEW_ELEMENT(element)
+    dispatch.mainStore.SET_SELECTED_ELEMENT_ID(element.id)
 
     if (creatingElement) {
       dispatch.mainStore.SET_CREATING_ELEMENT(null)
