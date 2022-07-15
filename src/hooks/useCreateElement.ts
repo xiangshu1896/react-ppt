@@ -2,6 +2,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { PPTElement, CommonElementPosition } from '@/types/slides'
 import { nanoid } from 'nanoid'
+import { getImageSize } from '@/utils/image'
+import {
+  VIEWPORT_WIDTH,
+  VIEWPORT_HEIGHT,
+  VIEWPORT_RATIO
+} from '@/configs/canvas'
 
 export default () => {
   const dispatch = useDispatch<Dispatch>()
@@ -24,10 +30,9 @@ export default () => {
    */
   const createTextElement = (position: CommonElementPosition, content = '') => {
     const { left, top, width, height } = position
-    const id = 'element_' + nanoid()
     createElement({
       type: 'text',
-      id,
+      id: 'element_' + nanoid(),
       left,
       top,
       width,
@@ -37,7 +42,35 @@ export default () => {
     })
   }
 
+  /**
+   * 创建图片元素
+   */
+  const createImageElement = (url: string) => {
+    getImageSize(url).then(({ width, height }) => {
+      const scale = height / width
+
+      if (scale < VIEWPORT_RATIO && width > VIEWPORT_WIDTH) {
+        width = VIEWPORT_WIDTH
+        height = VIEWPORT_WIDTH * scale
+      } else if (height > VIEWPORT_HEIGHT) {
+        height = VIEWPORT_HEIGHT
+        width = VIEWPORT_HEIGHT / scale
+      }
+
+      createElement({
+        type: 'image',
+        id: 'element_' + nanoid(),
+        url,
+        width,
+        height,
+        left: (VIEWPORT_WIDTH - width) / 2,
+        top: (VIEWPORT_HEIGHT - height) / 2
+      })
+    })
+  }
+
   return {
-    createTextElement
+    createTextElement,
+    createImageElement
   }
 }

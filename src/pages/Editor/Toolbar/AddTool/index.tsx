@@ -1,55 +1,18 @@
 import * as React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
-import { Dropdown, Space, Menu } from 'antd'
+import { Dropdown, Space, Menu, Upload } from 'antd'
+import { MenuInfo } from 'rc-menu/lib/interface'
+import type { UploadProps } from 'antd'
+import { getImageDataUrl } from '@/utils/image'
 import SvgIcon from '@/components/SvgIcon'
+import useCreateElement from '@/hooks/useCreateElement'
 import './index.scss'
-
-const addMoreMenu = (
-  <Menu
-    items={[
-      {
-        key: 'text',
-        label: (
-          <>
-            <SvgIcon.Text width="15" height="15" />
-            <div className="dropdown-title">文本框</div>
-          </>
-        )
-      },
-      {
-        key: 'shape',
-        label: (
-          <>
-            <SvgIcon.Shape width="15" height="15" />
-            <div className="dropdown-title">形状</div>
-          </>
-        )
-      },
-      {
-        key: 'image',
-        label: (
-          <>
-            <SvgIcon.Pic width="15" height="15" />
-            <div className="dropdown-title">图片</div>
-          </>
-        )
-      },
-      {
-        key: 'table',
-        label: (
-          <>
-            <SvgIcon.Table width="15" height="15" />
-            <div className="dropdown-title">表格</div>
-          </>
-        )
-      }
-    ]}
-  />
-)
 
 const AddTool = () => {
   const dispatch = useDispatch<Dispatch>()
+
+  const { createImageElement } = useCreateElement()
 
   const drawText = () => {
     dispatch.mainStore.SET_CREATING_ELEMENT({
@@ -58,11 +21,70 @@ const AddTool = () => {
   }
 
   const drawShape = () => {
-    dispatch.mainStore.SET_CREATING_ELEMENT({
-      type: 'shape',
-      data: {}
-    })
+    // dispatch.mainStore.SET_CREATING_ELEMENT({
+    //   type: 'shape',
+    //   data: {}
+    // })
   }
+
+  const handleMenuClick = (menuInfo: MenuInfo) => {
+    if (menuInfo.key === 'text') {
+      drawText()
+    }
+  }
+
+  const uplodProps: UploadProps = {
+    accept: 'image/*',
+    showUploadList: false,
+    beforeUpload(file) {
+      getImageDataUrl(file).then(res => createImageElement(res))
+      return false
+    }
+  }
+
+  const addMoreMenu = (
+    <Menu
+      onClick={handleMenuClick}
+      items={[
+        {
+          key: 'text',
+          label: (
+            <>
+              <SvgIcon.Text width="15" height="15" />
+              <div className="dropdown-title">文本框</div>
+            </>
+          )
+        },
+        {
+          key: 'shape',
+          label: (
+            <>
+              <SvgIcon.Shape width="15" height="15" />
+              <div className="dropdown-title">形状</div>
+            </>
+          )
+        },
+        {
+          key: 'image',
+          label: (
+            <Upload {...uplodProps}>
+              <SvgIcon.Pic width="15" height="15" />
+              <div className="dropdown-title">图片</div>
+            </Upload>
+          )
+        },
+        {
+          key: 'table',
+          label: (
+            <>
+              <SvgIcon.Table width="15" height="15" />
+              <div className="dropdown-title">表格</div>
+            </>
+          )
+        }
+      ]}
+    />
+  )
 
   return (
     <div className="add-tool">
