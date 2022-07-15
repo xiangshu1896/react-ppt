@@ -12,6 +12,7 @@ import { ReactComponent as Shape } from '@/assets/icons/shape.svg'
 import { ReactComponent as Text } from '@/assets/icons/text.svg'
 import { ReactComponent as Pic } from '@/assets/icons/pic.svg'
 import { ReactComponent as Table } from '@/assets/icons/table.svg'
+import { ReactComponent as Arrow } from '@/assets/icons/arrow.svg'
 
 const SvgIcon = {
   Aming,
@@ -27,7 +28,8 @@ const SvgIcon = {
   Shape,
   Text,
   Pic,
-  Table
+  Table,
+  Arrow
 }
 
 export default SvgIcon

@@ -20,13 +20,6 @@ const AddTool = () => {
     })
   }
 
-  const drawShape = () => {
-    // dispatch.mainStore.SET_CREATING_ELEMENT({
-    //   type: 'shape',
-    //   data: {}
-    // })
-  }
-
   const handleMenuClick = (menuInfo: MenuInfo) => {
     if (menuInfo.key === 'text') {
       drawText()
@@ -102,8 +95,9 @@ const AddTool = () => {
         <div className="tool-icon" onClick={drawText}>
           <SvgIcon.Text width="15" height="15" />
         </div>
-        <div className="tool-icon" onClick={drawShape}>
+        <div className="tool-icon icon-shape">
           <SvgIcon.Shape width="15" height="15" />
+          <SvgIcon.Arrow width="10" height="10" />
         </div>
       </Space>
     </div>
