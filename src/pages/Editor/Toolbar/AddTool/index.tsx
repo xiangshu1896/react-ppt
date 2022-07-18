@@ -7,6 +7,7 @@ import type { UploadProps } from 'antd'
 import { getImageDataUrl } from '@/utils/image'
 import SvgIcon from '@/components/SvgIcon'
 import useCreateElement from '@/hooks/useCreateElement'
+import { SHAPE_LIST_ITEM } from '@/configs/shape'
 import './index.scss'
 
 const AddTool = () => {
@@ -79,6 +80,48 @@ const AddTool = () => {
     />
   )
 
+  const shapeMenu = (
+    <div className="shape-menu">
+      {SHAPE_LIST_ITEM.map(shapeListItem => (
+        <div
+          className="shape-list-item"
+          key={shapeListItem.type + 'shape_list'}
+        >
+          <div className="shape-type">{shapeListItem.type}</div>
+          <div className="shape-list">
+            {shapeListItem.children.map((shapeMenuItem, shapeMenuIndex) => (
+              <div
+                className="shape-menu-item"
+                key={shapeMenuIndex + 'shape_menu'}
+              >
+                <div className="shape-content">
+                  <svg overflow="visible" width="16" height="16">
+                    <g
+                      transform={`scale(${16 / shapeMenuItem.viewBox[0]}, ${
+                        16 / shapeMenuItem.viewBox[1]
+                      }) translate(0,0) matrix(1,0,0,1,0,0)`}
+                    >
+                      <path
+                        className="shape-path"
+                        vectorEffect="non-scaling-stroke"
+                        strokeLinecap="butt"
+                        strokeMiterlimit="8"
+                        strokeWidth="1"
+                        fill="transparent"
+                        stroke="#555"
+                        d={shapeMenuItem.path}
+                      ></path>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+
   return (
     <div className="add-tool">
       <Space>
@@ -95,10 +138,16 @@ const AddTool = () => {
         <div className="tool-icon" onClick={drawText}>
           <SvgIcon.Text width="15" height="15" />
         </div>
-        <div className="tool-icon icon-shape">
-          <SvgIcon.Shape width="15" height="15" />
-          <SvgIcon.Arrow width="10" height="10" />
-        </div>
+        <Dropdown
+          overlay={shapeMenu}
+          trigger={['click']}
+          overlayClassName="shape-menu-dropdown"
+        >
+          <div className="tool-icon icon-shape">
+            <SvgIcon.Shape width="15" height="15" />
+            <SvgIcon.Arrow width="10" height="10" />
+          </div>
+        </Dropdown>
       </Space>
     </div>
   )

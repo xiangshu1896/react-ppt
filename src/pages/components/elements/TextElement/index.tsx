@@ -17,6 +17,7 @@ const TextComponent: React.FC<TextComponentProps> = props => {
   const isScaling = useSelector((state: RootState) => state.mainStore.isScaling)
   const textComponent = useRef<HTMLDivElement>(null)
 
+  // 当text元素发生缩放变化时，判断是否在缩放和高度是否变化，同时满足时更新元素高度
   const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
     if (!textComponent.current) {
       return
@@ -32,6 +33,7 @@ const TextComponent: React.FC<TextComponentProps> = props => {
 
   const resizeObserver = new ResizeObserver(updateTextElementHeight)
 
+  // 监听isScaling，使监听事件中的isScaling始终保持最新状态
   useEffect(() => {
     if (textComponent.current) {
       resizeObserver.observe(textComponent.current)
