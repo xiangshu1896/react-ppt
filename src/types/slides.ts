@@ -38,7 +38,7 @@ interface PPTBaseElement {
   height: number
 }
 
-export type PPTElement = PPTTextElement | PPTImageElement
+export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement
 
 /**
  * 文本元素
@@ -69,6 +69,28 @@ export interface PPTImageElement extends PPTBaseElement {
 }
 
 /**
+ * 形状元素
+ *
+ * type: 类型（形状）
+ *
+ * viewBox: SVG的viewBox属性
+ *
+ * path: 形状路径
+ *
+ * fill: 填充
+ *
+ * outlineColor: 边框颜色
+ *
+ */
+export interface PPTShapeElement extends PPTBaseElement {
+  type: 'shape'
+  viewBox: [number, number]
+  path: string
+  fill: string
+  outlineColor: string
+}
+
+/**
  * 元素边框
  *
  * style?: 边框样式（实线或虚线）
@@ -83,6 +105,9 @@ export interface PPTElementOutline {
   color?: string
 }
 
+/**
+ * 通用元素的位置大小
+ */
 export interface CommonElementPosition {
   left: number
   top: number

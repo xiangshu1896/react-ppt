@@ -23,6 +23,18 @@ export const slides: Slide[] = [
         width: 100,
         height: 100,
         url: 'https://markdown.com.cn/assets/img/philly-magic-garden.9c0b4415.jpg'
+      },
+      {
+        id: 'fa7s9d7f98a7sd98f',
+        type: 'shape',
+        left: 180,
+        top: 290,
+        width: 100,
+        height: 100,
+        viewBox: [200, 200],
+        path: 'M 0 0 L 0 200 L 200 200 Z',
+        fill: '#5b9bd5',
+        outlineColor: '#333'
       }
     ]
   },

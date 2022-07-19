@@ -2,6 +2,7 @@ import React from 'react'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import TextElement from '@/pages/components/elements/TextElement'
 import ImageElement from '@/pages/components/elements/ImageElement'
+import ShapeElement from '@/pages/components/elements/ShapeElement'
 import './index.scss'
 import useSelectElement from '../hooks/useSelectElement'
 import useDragElement from '../hooks/useDragElement'
@@ -12,7 +13,8 @@ interface ElementProps {
 
 const elementComponentMap = {
   [ElementTypes.TEXT]: TextElement,
-  [ElementTypes.IMAGE]: ImageElement
+  [ElementTypes.IMAGE]: ImageElement,
+  [ElementTypes.SHAPE]: ShapeElement
 }
 
 const Element: React.FC<ElementProps> = props => {
