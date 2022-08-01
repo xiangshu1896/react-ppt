@@ -8,6 +8,7 @@ import {
   VIEWPORT_HEIGHT,
   VIEWPORT_RATIO
 } from '@/configs/canvas'
+import { ShapeMenuItem } from '@/configs/shape'
 
 export default () => {
   const dispatch = useDispatch<Dispatch>()
@@ -69,8 +70,31 @@ export default () => {
     })
   }
 
+  /**
+   * 创建图形元素
+   */
+  const createShapeElement = (
+    position: CommonElementPosition,
+    shapeMenuItem: ShapeMenuItem
+  ) => {
+    const { left, top, width, height } = position
+    const { viewBox, path } = shapeMenuItem
+    createElement({
+      type: 'shape',
+      id: 'element_' + nanoid(),
+      left,
+      top,
+      width,
+      height,
+      viewBox,
+      path,
+      fill: '#0188FB'
+    })
+  }
+
   return {
     createTextElement,
-    createImageElement
+    createImageElement,
+    createShapeElement
   }
 }

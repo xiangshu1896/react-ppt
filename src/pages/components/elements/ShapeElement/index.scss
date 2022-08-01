@@ -1,4 +1,17 @@
 .element-shape-component {
   position: absolute;
-  cursor: move;
+  pointer-events: none;
+  .rotate-wrapper {
+    width: 100%;
+    height: 100%;
+    .shape-content {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      cursor: move;
+      .shape-path {
+        pointer-events: all;
+      }
+    }
+  }
 }

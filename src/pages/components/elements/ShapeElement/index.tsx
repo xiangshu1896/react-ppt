@@ -1,7 +1,6 @@
 import React from 'react'
 import { PPTShapeElement } from '@/types/slides'
 import './index.scss'
-
 interface ShapeComponentProps {
   element: PPTShapeElement
 }
@@ -25,7 +24,7 @@ const ShapeComponent = (props: ShapeComponentProps) => {
             <g
               transform={`scale(${element.width / element.viewBox[0]}, ${
                 element.height / element.viewBox[1]
-              }) translate(0,0) matrix(1,0,0,1,0,0)`}
+              })`}
             >
               <path
                 className="shape-path"

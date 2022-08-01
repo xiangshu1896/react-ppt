@@ -1,3 +1,5 @@
+import { ShapeMenuItem } from '@/configs/shape'
+
 export interface CreateElementSelectionData {
   start: [number, number]
   end: [number, number]
@@ -8,7 +10,7 @@ export interface CreatingTextElement {
 }
 export interface CreatingShapeElement {
   type: 'shape'
-  data: any
+  data: ShapeMenuItem
 }
 export interface CreatingLineElement {
   type: 'line'

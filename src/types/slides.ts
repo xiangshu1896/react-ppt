@@ -87,7 +87,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   viewBox: [number, number]
   path: string
   fill: string
-  outlineColor: string
+  outlineColor?: string
 }
 
 /**

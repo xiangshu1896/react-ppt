@@ -18,7 +18,7 @@ export const SHAPE_LIST_ITEM: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z'
+        path: 'M 0 40 C 0 18 18 0 40 0 L 160 0 C 180 0 200 18 200 40 L 200 160 C 200 180 180 200 160 200 L 40 200 C 18 200 0 180 0 160 L 0 40 Z'
       },
       {
         viewBox: [200, 200],

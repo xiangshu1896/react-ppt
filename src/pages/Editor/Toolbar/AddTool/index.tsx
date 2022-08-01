@@ -7,7 +7,7 @@ import type { UploadProps } from 'antd'
 import { getImageDataUrl } from '@/utils/image'
 import SvgIcon from '@/components/SvgIcon'
 import useCreateElement from '@/hooks/useCreateElement'
-import { SHAPE_LIST_ITEM } from '@/configs/shape'
+import { ShapeMenuItem, SHAPE_LIST_ITEM } from '@/configs/shape'
 import './index.scss'
 
 const AddTool = () => {
@@ -18,6 +18,13 @@ const AddTool = () => {
   const drawText = () => {
     dispatch.mainStore.SET_CREATING_ELEMENT({
       type: 'text'
+    })
+  }
+
+  const drawShape = (shapeMenuItem: ShapeMenuItem) => {
+    dispatch.mainStore.SET_CREATING_ELEMENT({
+      type: 'shape',
+      data: shapeMenuItem
     })
   }
 
@@ -94,7 +101,10 @@ const AddTool = () => {
                 className="shape-menu-item"
                 key={shapeMenuIndex + 'shape_menu'}
               >
-                <div className="shape-content">
+                <div
+                  className="shape-content"
+                  onClick={() => drawShape(shapeMenuItem)}
+                >
                   <svg overflow="visible" width="16" height="16">
                     <g
                       transform={`scale(${16 / shapeMenuItem.viewBox[0]}, ${

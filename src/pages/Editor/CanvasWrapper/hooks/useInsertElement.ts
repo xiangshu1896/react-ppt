@@ -4,7 +4,7 @@ import { DrawPosition } from '@/types/edit'
 import useCreateElement from '@/hooks/useCreateElement'
 
 export default (viewportRef: React.RefObject<HTMLDivElement>) => {
-  const { createTextElement } = useCreateElement()
+  const { createTextElement, createShapeElement } = useCreateElement()
 
   const creatingElement = useSelector(
     (state: RootState) => state.mainStore.creatingElement
@@ -31,6 +31,9 @@ export default (viewportRef: React.RefObject<HTMLDivElement>) => {
     const type = creatingElement?.type
     if (type === 'text') {
       createTextElement({ left, top, width, height }, '新增测试数据')
+    }
+    if (type === 'shape' && creatingElement?.data) {
+      createShapeElement({ left, top, width, height }, creatingElement.data)
     }
   }
 

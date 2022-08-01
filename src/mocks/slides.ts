@@ -13,7 +13,7 @@ export const slides: Slide[] = [
         width: 100,
         height: 42,
         content: '测试文本',
-        defaultColor: '#333'
+        defaultColor: '#303133'
       },
       {
         id: 'gasdaggeqeh79ads7f8',
@@ -27,14 +27,13 @@ export const slides: Slide[] = [
       {
         id: 'fa7s9d7f98a7sd98f',
         type: 'shape',
-        left: 180,
-        top: 290,
+        left: 256,
+        top: 190,
         width: 100,
         height: 100,
         viewBox: [200, 200],
         path: 'M 0 0 L 0 200 L 200 200 Z',
-        fill: '#5b9bd5',
-        outlineColor: '#333'
+        fill: '#0188FB'
       }
     ]
   },
