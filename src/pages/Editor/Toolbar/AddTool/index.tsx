@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { Dropdown, Space, Menu, Upload } from 'antd'
@@ -11,6 +11,8 @@ import { ShapeMenuItem, SHAPE_LIST_ITEM } from '@/configs/shape'
 import './index.scss'
 
 const AddTool = () => {
+  const [isShapeDPVisible, setIsShapeDPVisible] = useState(false)
+
   const dispatch = useDispatch<Dispatch>()
 
   const { createImageElement } = useCreateElement()
@@ -26,6 +28,7 @@ const AddTool = () => {
       type: 'shape',
       data: shapeMenuItem
     })
+    setIsShapeDPVisible(false)
   }
 
   const handleMenuClick = (menuInfo: MenuInfo) => {
@@ -41,6 +44,10 @@ const AddTool = () => {
       getImageDataUrl(file).then(res => createImageElement(res))
       return false
     }
+  }
+
+  const handleShapeDPVisibleChange = (flag: boolean) => {
+    setIsShapeDPVisible(flag)
   }
 
   const addMoreMenu = (
@@ -151,6 +158,8 @@ const AddTool = () => {
         <Dropdown
           overlay={shapeMenu}
           trigger={['click']}
+          onVisibleChange={handleShapeDPVisibleChange}
+          visible={isShapeDPVisible}
           overlayClassName="shape-menu-dropdown"
         >
           <div className="tool-icon icon-shape">

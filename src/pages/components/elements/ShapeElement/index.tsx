@@ -5,7 +5,7 @@ interface ShapeComponentProps {
   element: PPTShapeElement
 }
 
-const ShapeComponent = (props: ShapeComponentProps) => {
+const ShapeComponent: React.FC<ShapeComponentProps> = props => {
   const { element } = props
 
   return (
