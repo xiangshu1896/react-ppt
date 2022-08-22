@@ -50,50 +50,6 @@ const AddTool = () => {
     setIsShapeDPVisible(flag)
   }
 
-  const addMoreMenu = (
-    <Menu
-      onClick={handleMenuClick}
-      items={[
-        {
-          key: 'text',
-          label: (
-            <>
-              <SvgIcon.Text width="15" height="15" />
-              <div className="dropdown-title">文本框</div>
-            </>
-          )
-        },
-        {
-          key: 'shape',
-          label: (
-            <>
-              <SvgIcon.Shape width="15" height="15" />
-              <div className="dropdown-title">形状</div>
-            </>
-          )
-        },
-        {
-          key: 'image',
-          label: (
-            <Upload {...uplodProps}>
-              <SvgIcon.Pic width="15" height="15" />
-              <div className="dropdown-title">图片</div>
-            </Upload>
-          )
-        },
-        {
-          key: 'table',
-          label: (
-            <>
-              <SvgIcon.Table width="15" height="15" />
-              <div className="dropdown-title">表格</div>
-            </>
-          )
-        }
-      ]}
-    />
-  )
-
   const shapeMenu = (
     <div className="shape-menu">
       {SHAPE_LIST_ITEM.map(shapeListItem => (
@@ -137,6 +93,57 @@ const AddTool = () => {
         </div>
       ))}
     </div>
+  )
+
+  const addMoreMenu = (
+    <Menu
+      onClick={handleMenuClick}
+      items={[
+        {
+          key: 'text',
+          label: (
+            <>
+              <SvgIcon.Text width="15" height="15" />
+              <div className="dropdown-title">文本框</div>
+            </>
+          )
+        },
+        {
+          key: 'shape',
+          label: (
+            <>
+              <SvgIcon.Shape width="15" height="15" />
+              <div className="dropdown-title">形状</div>
+            </>
+          ),
+          children: [
+            {
+              key: '2-1',
+              label: shapeMenu
+            }
+          ],
+          popupClassName: 'shape-menu-children'
+        },
+        {
+          key: 'image',
+          label: (
+            <Upload {...uplodProps}>
+              <SvgIcon.Pic width="15" height="15" />
+              <div className="dropdown-title">图片</div>
+            </Upload>
+          )
+        },
+        {
+          key: 'table',
+          label: (
+            <>
+              <SvgIcon.Table width="15" height="15" />
+              <div className="dropdown-title">表格</div>
+            </>
+          )
+        }
+      ]}
+    />
   )
 
   return (

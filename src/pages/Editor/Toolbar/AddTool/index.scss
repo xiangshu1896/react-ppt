@@ -50,6 +50,43 @@
   .ant-dropdown-menu-item:nth-child(3) {
     padding: 0;
   }
+  .ant-dropdown-menu-submenu-expand-icon {
+    top: 3px;
+  }
+}
+
+.shape-menu-children {
+  .shape-menu {
+    color: $regularText;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 300;
+    width: 318px;
+    max-height: 580px;
+    overflow: auto;
+    .shape-list-item {
+      .shape-list {
+        margin: 8px 0 10px;
+        display: flex;
+        flex-wrap: wrap;
+        .shape-menu-item {
+          margin: 0 5px 6px 0;
+          .shape-content {
+            width: 26px;
+            height: 26px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &:hover {
+              cursor: pointer;
+              background-color: rgba(0, 0, 0, 0.04);
+              border-radius: 3px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .shape-menu-dropdown {
