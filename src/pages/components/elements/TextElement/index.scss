@@ -1,8 +1,8 @@
 .element-text-component {
   position: absolute;
+  box-sizing: border-box;
   .text-content {
-    padding: 10px;
-    cursor: move;
+    padding: 5px;
     user-select: none;
     .slate-editor {
       cursor: text;

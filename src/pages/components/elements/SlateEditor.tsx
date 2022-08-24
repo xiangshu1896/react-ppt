@@ -4,18 +4,6 @@ import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import useSelectElement from '@/pages/Editor/CanvasWrapper/hooks/useSelectElement'
 import { PPTTextElement } from '@/types/slides'
 
-// Slate的Typescript基础定义
-type CustomElement = { type: 'paragraph'; children: CustomText[] }
-type CustomText = { text: string }
-
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: BaseEditor & ReactEditor
-    Element: CustomElement
-    Text: CustomText
-  }
-}
-
 interface SlateEditorProps {
   element: PPTTextElement
   value: string

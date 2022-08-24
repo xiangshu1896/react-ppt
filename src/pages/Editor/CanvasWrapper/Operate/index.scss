@@ -8,20 +8,20 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 0;
-      height: 0;
-      border: 0 solid $blueColor1;
+      box-sizing: content-box;
+      background-color: $blueColor1;
+      cursor: move;
       &.top {
-        border-top-width: 1px;
+        height: 1px;
       }
       &.bottom {
-        border-bottom-width: 1px;
+        height: 1px;
       }
       &.left {
-        border-left-width: 1px;
+        width: 1px;
       }
       &.right {
-        border-right-width: 1px;
+        width: 1px;
       }
     }
   }

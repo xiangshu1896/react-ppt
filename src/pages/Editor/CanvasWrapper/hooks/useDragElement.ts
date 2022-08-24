@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { MIN_MOVE_RANGE } from '@/configs/canvas'
-import _ from 'lodash'
 
 export default () => {
   const [isMouseDown, setIsMouseDown] = useState(false)

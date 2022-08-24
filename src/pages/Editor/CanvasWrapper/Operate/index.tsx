@@ -4,6 +4,8 @@ import { RootState, Dispatch } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import './index.scss'
 import useResizeElement from '../hooks/useResizeElement'
+import useSelectElement from '../hooks/useSelectElement'
+import useDragElement from '../hooks/useDragElement'
 
 interface OperateProps {
   element: PPTElement
@@ -13,6 +15,9 @@ interface OperateProps {
 
 const Operate: React.FC<OperateProps> = props => {
   const { element, isSelected, isMultiSelected } = props
+
+  const { selectElement } = useSelectElement()
+  const { dragElement } = useDragElement()
 
   const canvasScale = useSelector(
     (state: RootState) => state.mainStore.canvasScale
@@ -115,6 +120,12 @@ const Operate: React.FC<OperateProps> = props => {
     dragResizeBox(e, pos)
   }
 
+  const handleLineMD = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    selectElement(e, element)
+    dragElement(e)
+  }
+
   return (
     <div
       className="operate"
@@ -131,6 +142,7 @@ const Operate: React.FC<OperateProps> = props => {
                 className={`operate-line ${line.className}`}
                 key={line.className + 'operate-line'}
                 style={line.style}
+                onMouseDown={handleLineMD}
               ></div>
             ))}
           </div>

@@ -34,6 +34,14 @@ export const slides: Slide[] = [
         viewBox: [200, 200],
         path: 'M 0 0 L 0 200 L 200 200 Z',
         fill: '#0188FB'
+      },
+      {
+        id: 'a79ds7f89a798df',
+        type: 'table',
+        left: 496,
+        top: 290,
+        width: 300,
+        height: 100
       }
     ]
   },

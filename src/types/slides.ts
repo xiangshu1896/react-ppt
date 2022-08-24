@@ -38,7 +38,11 @@ interface PPTBaseElement {
   height: number
 }
 
-export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement
+export type PPTElement =
+  | PPTTextElement
+  | PPTImageElement
+  | PPTShapeElement
+  | PPTTableElement
 
 /**
  * 文本元素
@@ -88,6 +92,13 @@ export interface PPTShapeElement extends PPTBaseElement {
   path: string
   fill: string
   outlineColor?: string
+}
+
+/**
+ * 表格元素
+ */
+export interface PPTTableElement extends PPTBaseElement {
+  type: 'table'
 }
 
 /**

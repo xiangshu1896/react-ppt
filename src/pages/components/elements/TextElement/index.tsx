@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import ElementOutline from '../ElementOutline'
 import SlateEditor from '../SlateEditor'
+import useSelectElement from '@/pages/Editor/CanvasWrapper/hooks/useSelectElement'
 import './index.scss'
 
 interface TextComponentProps {
@@ -12,6 +13,8 @@ interface TextComponentProps {
 
 const TextComponent: React.FC<TextComponentProps> = props => {
   const { element } = props
+
+  const { selectElement } = useSelectElement()
 
   const dispatch = useDispatch<Dispatch>()
   const isScaling = useSelector((state: RootState) => state.mainStore.isScaling)
@@ -45,6 +48,11 @@ const TextComponent: React.FC<TextComponentProps> = props => {
     }
   }, [isScaling])
 
+  const handleTextComponentMD = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    selectElement(e, element)
+  }
+
   return (
     <div
       className="element-text-component"
@@ -54,6 +62,7 @@ const TextComponent: React.FC<TextComponentProps> = props => {
         width: element.width
       }}
       ref={textComponent}
+      onMouseDown={handleTextComponentMD}
     >
       <div className="rotate-wrapper">
         <div
