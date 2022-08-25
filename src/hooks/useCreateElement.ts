@@ -1,6 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
-import { PPTElement, CommonElementPosition } from '@/types/slides'
+import {
+  PPTElement,
+  CommonElementPosition,
+  CustomElement,
+  CustomText
+} from '@/types/slides'
 import { nanoid } from 'nanoid'
 import { getImageSize } from '@/utils/image'
 import {
@@ -92,9 +97,61 @@ export default () => {
     })
   }
 
+  /**
+   * 创建表格元素
+   */
+  const createTableElement = (tableNum: {
+    rowNum: number
+    cellNum: number
+  }) => {
+    const { rowNum, cellNum } = tableNum
+    const rowHeight = ((1 / rowNum) * 100).toFixed(2) + '%'
+    const cellWidth = ((1 / cellNum) * 100).toFixed(2) + '%'
+    // 依据行数列数生成table content
+    const content: (CustomElement | CustomText)[] = [
+      {
+        type: 'table',
+        children: Array(rowNum)
+          .fill('')
+          .map(() => ({
+            type: 'table-row',
+            height: rowHeight,
+            children: Array(cellNum)
+              .fill('')
+              .map(() => ({
+                type: 'table-cell',
+                width: cellWidth,
+                children: [{ text: '' }]
+              }))
+          }))
+      }
+    ]
+
+    // 根据表格行列数计算出table大小，每个cell宽高为20×40，高度不限，宽度不超过800px
+    const tableWidth = cellNum * 80 > 800 ? 800 : cellNum * 80
+    const tableHeight = rowNum * 40
+    // 计算位置，宽度居中，高度如果小于画布高度则居中，否则置顶
+    const left = (VIEWPORT_WIDTH - tableWidth) / 2
+    const top =
+      VIEWPORT_HEIGHT - tableHeight > 0
+        ? (VIEWPORT_HEIGHT - tableHeight) / 2
+        : 0
+
+    createElement({
+      type: 'table',
+      id: 'element_' + nanoid(),
+      left,
+      top,
+      width: tableWidth,
+      height: tableHeight,
+      content
+    })
+  }
+
   return {
     createTextElement,
     createImageElement,
-    createShapeElement
+    createShapeElement,
+    createTableElement
   }
 }

@@ -61,7 +61,7 @@
     background-color: #fff;
     font-size: 12px;
     font-weight: 300;
-    width: 318px;
+    width: 280px;
     max-height: 580px;
     overflow: auto;
     .shape-list-item {
@@ -84,6 +84,43 @@
             }
           }
         }
+      }
+    }
+  }
+  .ant-dropdown-menu-item:hover {
+    background-color: #fff;
+  }
+}
+
+.table-menu-children {
+  .table-menu {
+    color: $regularText;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 300;
+    padding: 0 8px;
+    .table-selector {
+      margin-top: 10px;
+      .selector-row {
+        display: flex;
+        margin-bottom: 4px;
+        .selector-cell {
+          width: 13px;
+          height: 13px;
+          border: 1px solid $darkerBorder;
+          margin-right: 4px;
+          background-color: $lighterFill;
+          &.selected {
+            border-color: $blueColor2;
+          }
+        }
+      }
+    }
+    .custom-table-selector {
+      font-size: 14px;
+      margin: 10px 0 5px;
+      &:hover {
+        color: $blueColor1;
       }
     }
   }

@@ -41,7 +41,92 @@ export const slides: Slide[] = [
         left: 496,
         top: 290,
         width: 300,
-        height: 100
+        height: 100,
+        content: [
+          {
+            type: 'table',
+            children: [
+              {
+                type: 'table-row',
+                height: '33.33%',
+                children: [
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  }
+                ]
+              },
+              {
+                type: 'table-row',
+                height: '33.33%',
+                children: [
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  }
+                ]
+              },
+              {
+                type: 'table-row',
+                height: '33.33%',
+                children: [
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  },
+                  {
+                    type: 'table-cell',
+                    width: '25%',
+                    children: [{ text: '' }]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },

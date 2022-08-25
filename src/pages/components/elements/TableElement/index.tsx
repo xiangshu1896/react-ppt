@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { PPTTableElement } from '@/types/slides'
+import { PPTTableElement, CustomElement, CustomText } from '@/types/slides'
 import {
   Slate,
   Editable,
@@ -18,14 +18,6 @@ import {
 } from 'slate'
 import useSelectElement from '@/pages/Editor/CanvasWrapper/hooks/useSelectElement'
 import './index.scss'
-
-type CustomElement = {
-  type: 'paragraph' | 'table' | 'table-cell' | 'table-row'
-  children: (CustomText | CustomElement)[]
-  width?: string
-  height?: string
-}
-type CustomText = { text: string; bold?: true }
 
 declare module 'slate' {
   interface CustomTypes {
@@ -96,101 +88,11 @@ const withTables = (editor: Editor) => {
   return editor
 }
 
-const initialValue: Descendant[] = [
-  {
-    type: 'table',
-    children: [
-      {
-        type: 'table-row',
-        height: '33.33%',
-        children: [
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          }
-        ]
-      },
-      {
-        type: 'table-row',
-        height: '33.33%',
-        children: [
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          }
-        ]
-      },
-      {
-        type: 'table-row',
-        height: '33.33%',
-        children: [
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          },
-          {
-            type: 'table-cell',
-            width: '25%',
-            children: [{ text: '' }]
-          }
-        ]
-      }
-    ]
-  }
-]
-
 const TableComponent: React.FC<TableComponentProps> = props => {
   const { element } = props
 
   const { selectElement } = useSelectElement()
-
-  const handleTableCellMD = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    selectElement(e, element)
-  }
+  const initialValue: Descendant[] = element.content
 
   const TableElement = ({
     attributes,
@@ -220,7 +122,6 @@ const TableComponent: React.FC<TableComponentProps> = props => {
             className="table-cell"
             style={{ width: element.width }}
             {...attributes}
-            onMouseDown={handleTableCellMD}
           >
             {children}
           </div>
@@ -236,6 +137,11 @@ const TableComponent: React.FC<TableComponentProps> = props => {
   )
   const editor = useMemo(() => withTables(withReact(createEditor())), [])
 
+  const handleTableComponentMD = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    selectElement(e, element)
+  }
+
   return (
     <div
       className="element-table-component"
@@ -245,6 +151,7 @@ const TableComponent: React.FC<TableComponentProps> = props => {
         width: element.width,
         height: element.height
       }}
+      onMouseDown={handleTableComponentMD}
     >
       <Slate editor={editor} value={initialValue}>
         <Editable renderElement={renderElement} />

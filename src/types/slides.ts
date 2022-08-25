@@ -99,6 +99,7 @@ export interface PPTShapeElement extends PPTBaseElement {
  */
 export interface PPTTableElement extends PPTBaseElement {
   type: 'table'
+  content: (CustomElement | CustomText)[]
 }
 
 /**
@@ -125,3 +126,14 @@ export interface CommonElementPosition {
   width: number
   height: number
 }
+
+/**
+ * slate自定义元素
+ */
+export type CustomElement = {
+  type: 'paragraph' | 'table' | 'table-cell' | 'table-row'
+  children: (CustomText | CustomElement)[]
+  width?: string
+  height?: string
+}
+export type CustomText = { text: string; bold?: true }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
-import { Dropdown, Space, Menu, Upload } from 'antd'
+import { Dropdown, Space, Menu, Upload, Modal, Form, InputNumber } from 'antd'
 import { MenuInfo } from 'rc-menu/lib/interface'
 import type { UploadProps } from 'antd'
 import { getImageDataUrl } from '@/utils/image'
@@ -15,7 +15,7 @@ const AddTool = () => {
 
   const dispatch = useDispatch<Dispatch>()
 
-  const { createImageElement } = useCreateElement()
+  const { createImageElement, createTableElement } = useCreateElement()
 
   const drawText = () => {
     dispatch.mainStore.SET_CREATING_ELEMENT({
@@ -95,6 +95,137 @@ const AddTool = () => {
     </div>
   )
 
+  const [addTableInfo, setAddTableInfo] = useState('插入表格')
+  const [tableSelectInfo, setTableSelectInfo] = useState({
+    rowIndex: -1,
+    cellIndex: -1
+  })
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [form] = Form.useForm()
+
+  const handleCellMouseOver = (tableIndex: {
+    rowIndex: number
+    cellIndex: number
+  }) => {
+    setTableSelectInfo(tableIndex)
+    if (tableIndex.rowIndex > -1 && tableIndex.cellIndex > -1) {
+      setAddTableInfo(
+        `${tableIndex.cellIndex + 1}×${tableIndex.rowIndex + 1}表格`
+      )
+    }
+  }
+
+  const handleTableSelectorMO = () => {
+    setTableSelectInfo({
+      rowIndex: -1,
+      cellIndex: -1
+    })
+    setAddTableInfo('插入表格')
+  }
+
+  const openCustomTableNum = () => {
+    setIsModalVisible(true)
+  }
+
+  const handleTableFormCancel = () => {
+    setIsModalVisible(false)
+  }
+
+  const handleTableFormOk = () => {
+    form.validateFields().then(() => {
+      const values = form.getFieldsValue() as {
+        rowNum: number
+        cellNum: number
+      }
+      addTable(values)
+    })
+  }
+
+  const addTable = (tableNum: { rowNum: number; cellNum: number }) => {
+    createTableElement(tableNum)
+  }
+
+  const tableMenu = (
+    <div className="table-menu">
+      <div className="add-table-info">{addTableInfo}</div>
+      <div className="table-selector" onMouseLeave={handleTableSelectorMO}>
+        {Array(8)
+          .fill('row')
+          .map((row, rowIndex) => {
+            return (
+              <div className="selector-row" key={row + rowIndex}>
+                {Array(10)
+                  .fill('cell')
+                  .map((cell, cellIndex) => {
+                    return (
+                      <div
+                        className={`selector-cell ${
+                          rowIndex <= tableSelectInfo.rowIndex &&
+                          cellIndex <= tableSelectInfo.cellIndex
+                            ? 'selected'
+                            : ''
+                        }`}
+                        key={cell + cellIndex}
+                        onMouseOver={() =>
+                          handleCellMouseOver({
+                            rowIndex: rowIndex,
+                            cellIndex: cellIndex
+                          })
+                        }
+                        onClick={() =>
+                          addTable({
+                            rowNum: rowIndex + 1,
+                            cellNum: cellIndex + 1
+                          })
+                        }
+                      ></div>
+                    )
+                  })}
+              </div>
+            )
+          })}
+      </div>
+      <div className="custom-table-selector" onClick={openCustomTableNum}>
+        自定义行列数
+      </div>
+      <Modal
+        title="自定义行列数"
+        visible={isModalVisible}
+        width={500}
+        onOk={handleTableFormOk}
+        onCancel={handleTableFormCancel}
+      >
+        <Form
+          form={form}
+          name="cumstom-table-form"
+          layout="inline"
+          style={{ justifyContent: 'space-between', height: '80px' }}
+        >
+          <Form.Item
+            name="rowNum"
+            label="行数"
+            rules={[
+              { type: 'number', max: 20, min: 1, message: '有效数值为1至20' }
+            ]}
+            initialValue={2}
+          >
+            <InputNumber style={{ width: '120px' }} />
+          </Form.Item>
+          <Form.Item
+            name="cellNum"
+            label="列数"
+            rules={[
+              { type: 'number', max: 20, min: 1, message: '有效数值为1至20' }
+            ]}
+            initialValue={5}
+          >
+            <InputNumber style={{ width: '120px' }} />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
+  )
+
   const addMoreMenu = (
     <Menu
       onClick={handleMenuClick}
@@ -118,7 +249,7 @@ const AddTool = () => {
           ),
           children: [
             {
-              key: '2-1',
+              key: 'shape-menu',
               label: shapeMenu
             }
           ],
@@ -140,7 +271,14 @@ const AddTool = () => {
               <SvgIcon.Table width="15" height="15" />
               <div className="dropdown-title">表格</div>
             </>
-          )
+          ),
+          children: [
+            {
+              key: 'table-menu',
+              label: tableMenu
+            }
+          ],
+          popupClassName: 'table-menu-children'
         }
       ]}
     />
