@@ -14,6 +14,8 @@ import {
   VIEWPORT_RATIO
 } from '@/configs/canvas'
 import { ShapeMenuItem } from '@/configs/shape'
+import { useEffect, useRef } from 'react'
+import { CreatingElement } from '@/types/edit'
 
 export default () => {
   const dispatch = useDispatch<Dispatch>()
@@ -21,12 +23,18 @@ export default () => {
     (state: RootState) => state.mainStore.creatingElement
   )
 
+  // 记录最新数据，保证数据为最新值
+  const creatingElementRef = useRef<CreatingElement | null>()
+  useEffect(() => {
+    creatingElementRef.current = creatingElement
+  }, [creatingElement])
+
   // 创建（插入）一个元素并将其设置为被选中元素
   const createElement = (element: PPTElement) => {
     dispatch.slidesStore.ADD_NEW_ELEMENT(element)
     dispatch.mainStore.SET_SELECTED_ELEMENT_ID(element.id)
 
-    if (creatingElement) {
+    if (creatingElementRef.current) {
       dispatch.mainStore.SET_CREATING_ELEMENT(null)
     }
   }

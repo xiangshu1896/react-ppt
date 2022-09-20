@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { MIN_MOVE_RANGE, MIN_ELEMENT_SIZE } from '@/configs/canvas'
 import { PPTElement } from '@/types/slides'
+import _ from 'lodash'
 
 export default () => {
-  const [isMouseDown, setIsMouseDown] = useState(false)
-  const [startPageX, setStartPageX] = useState(0)
-  const [startPageY, setStartPageY] = useState(0)
-  const [resizePos, setResizePos] = useState('')
-
   const dispatch = useDispatch<Dispatch>()
   const selectedElementIdList = useSelector(
     (state: RootState) => state.mainStore.selectedElementIdList
@@ -22,22 +18,15 @@ export default () => {
     (state: RootState) => state.slidesStore.slideIndex
   )
 
-  const currentElementList = slides[slideIndex].elements
+  const selectedElementIdListRef = useRef<string[]>()
+  const canvasScaleRef = useRef<number>()
+  const currentElementListRef = useRef<PPTElement[]>()
 
   useEffect(() => {
-    if (isMouseDown) {
-      document.onmousemove = handleMoveResizeBox
-      document.onmouseup = handleUpResizeBox
-    }
-  }, [isMouseDown])
-
-  const dragResizeBox = (e: React.MouseEvent, pos: string) => {
-    setIsMouseDown(true)
-    dispatch.mainStore.SET_IS_SCALING(true)
-    setResizePos(pos)
-    setStartPageX(e.pageX)
-    setStartPageY(e.pageY)
-  }
+    selectedElementIdListRef.current = selectedElementIdList
+    canvasScaleRef.current = canvasScale
+    currentElementListRef.current = slides[slideIndex].elements
+  }, [slides, slideIndex, canvasScale, selectedElementIdList])
 
   // 根据resizeBox的className和移动的位置，来计算元素resize变化的数值
   const calResizeData = (
@@ -148,51 +137,63 @@ export default () => {
     }
   }
 
-  const handleMoveResizeBox = (e: MouseEvent) => {
-    const currentPageX = e.pageX
-    const currentPageY = e.pageY
+  const dragResizeBox = (e: React.MouseEvent, pos: string) => {
+    let isMouseDown = true
+    const startPageX = e.pageX
+    const startPageY = e.pageY
 
-    const isMissOperate =
-      Math.abs(startPageX - currentPageX) < MIN_MOVE_RANGE &&
-      Math.abs(startPageY - currentPageX) < MIN_MOVE_RANGE
+    dispatch.mainStore.SET_IS_SCALING(true)
 
-    if (!isMouseDown || isMissOperate) {
-      return
+    // 记录原始数据
+    const currentElementListOrigin = _.cloneDeep(currentElementListRef.current)
+
+    document.onmousemove = (e: MouseEvent) => {
+      const currentPageX = e.pageX
+      const currentPageY = e.pageY
+
+      const isMissOperate =
+        Math.abs(startPageX - currentPageX) < MIN_MOVE_RANGE &&
+        Math.abs(startPageY - currentPageX) < MIN_MOVE_RANGE
+
+      if (!isMouseDown || isMissOperate) {
+        return
+      }
+
+      const moveX = (currentPageX - startPageX) / canvasScale
+      const moveY = (currentPageY - startPageY) / canvasScale
+
+      const resElementList = currentElementListOrigin?.map(oriElementItem => {
+        if (selectedElementIdList.includes(oriElementItem.id)) {
+          const { left, top, width, height } = calResizeData(
+            pos,
+            moveX,
+            moveY,
+            oriElementItem,
+            e.shiftKey
+          )
+
+          return Object.assign({}, oriElementItem, {
+            left,
+            top,
+            width,
+            height
+          })
+        } else {
+          return oriElementItem
+        }
+      })
+
+      resElementList &&
+        dispatch.slidesStore.SET_CURRENT_SLIDE_NEW_ELS(resElementList)
     }
 
-    const moveX = (currentPageX - startPageX) / canvasScale
-    const moveY = (currentPageY - startPageY) / canvasScale
+    document.onmouseup = () => {
+      isMouseDown = false
+      dispatch.mainStore.SET_IS_SCALING(false)
 
-    const resElementList = currentElementList.map(oriElementItem => {
-      if (selectedElementIdList.includes(oriElementItem.id)) {
-        const { left, top, width, height } = calResizeData(
-          resizePos,
-          moveX,
-          moveY,
-          oriElementItem,
-          e.shiftKey
-        )
-
-        return Object.assign({}, oriElementItem, {
-          left,
-          top,
-          width,
-          height
-        })
-      } else {
-        return oriElementItem
-      }
-    })
-
-    dispatch.slidesStore.SET_CURRENT_SLIDE_NEW_ELS(resElementList)
-  }
-
-  const handleUpResizeBox = () => {
-    setIsMouseDown(false)
-    dispatch.mainStore.SET_IS_SCALING(false)
-
-    document.onmousemove = null
-    document.onmouseup = null
+      document.onmousemove = null
+      document.onmouseup = null
+    }
   }
 
   return {

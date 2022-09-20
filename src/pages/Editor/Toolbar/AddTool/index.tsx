@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState, Dispatch } from '@/store'
+import { useDispatch } from 'react-redux'
+import { Dispatch } from '@/store'
 import { Dropdown, Space, Menu, Upload, Modal, Form, InputNumber } from 'antd'
 import { MenuInfo } from 'rc-menu/lib/interface'
 import type { UploadProps } from 'antd'
@@ -138,6 +138,7 @@ const AddTool = () => {
         cellNum: number
       }
       addTable(values)
+      setIsModalVisible(false)
     })
   }
 

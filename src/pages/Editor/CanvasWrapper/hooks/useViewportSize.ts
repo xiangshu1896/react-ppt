@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from 'react'
+import { RefObject, useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   VIEWPORT_WIDTH,
   VIEWPORT_HEIGHT,
@@ -21,9 +21,14 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
   const canvasPercentage = useSelector(
     (state: RootState) => state.mainStore.canvasPercentage
   )
+  const canvasPercentageRef = useRef<number>()
+
+  useEffect(() => {
+    canvasPercentageRef.current = canvasPercentage
+  }, [canvasPercentage])
 
   // 更新视图大小位置、缩放比
-  const setViewportPosition = () => {
+  const setViewportPosition = useCallback(() => {
     if (!canvasRef.current) {
       return
     }
@@ -31,14 +36,16 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
     const canvasHeight = canvasRef.current.clientHeight
 
     if (canvasHeight / canvasWidth > VIEWPORT_RATIO) {
-      const viewportActualWidth = canvasWidth * (canvasPercentage / 100)
+      const viewportActualWidth =
+        canvasWidth * ((canvasPercentageRef.current || 90) / 100)
       dispatch.mainStore.SET_CANVAS_SCALE(viewportActualWidth / VIEWPORT_WIDTH)
       setViewportStyles({
         left: (canvasWidth - viewportActualWidth) / 2,
         top: (canvasHeight - viewportActualWidth * VIEWPORT_RATIO) / 2
       })
     } else {
-      const viewportActualHeight = canvasHeight * (canvasPercentage / 100)
+      const viewportActualHeight =
+        canvasHeight * ((canvasPercentageRef.current || 90) / 100)
       dispatch.mainStore.SET_CANVAS_SCALE(
         viewportActualHeight / VIEWPORT_HEIGHT
       )
@@ -47,24 +54,25 @@ export default (canvasRef: RefObject<HTMLDivElement>) => {
         top: (canvasHeight - viewportActualHeight) / 2
       })
     }
-  }
-
-  // 监听视图占比变化时更新
-  useEffect(setViewportPosition, [canvasPercentage])
+  }, [canvasRef, dispatch.mainStore, setViewportStyles])
 
   // 监听窗口变化时更新
-  const resizeObserver = new ResizeObserver(_.throttle(setViewportPosition, 20))
+  const resizeObserver = useMemo(
+    () => new ResizeObserver(setViewportPosition),
+    [setViewportPosition]
+  )
 
   useEffect(() => {
-    if (canvasRef.current) {
-      resizeObserver.observe(canvasRef.current)
+    const canvasRefHTML = canvasRef.current
+    if (canvasRefHTML) {
+      resizeObserver.observe(canvasRefHTML)
     }
     return () => {
-      if (canvasRef.current) {
-        resizeObserver.unobserve(canvasRef.current)
+      if (canvasRefHTML) {
+        resizeObserver.unobserve(canvasRefHTML)
       }
     }
-  }, [])
+  }, [resizeObserver, canvasRef])
 
   return { viewportStyles }
 }

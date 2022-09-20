@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import SelectArea from './SelectArea'
 import Element from './Element'
 import Operate from './Operate'
@@ -9,6 +9,7 @@ import { RootState, Dispatch } from '@/store'
 import './index.scss'
 import useSelectArea from './hooks/useSelectArea'
 import useInsertElement from './hooks/useInsertElement'
+import { PPTElement } from '@/types/slides'
 
 const CanvasWrapper = () => {
   const canvasRef = useRef<HTMLDivElement>(null)
@@ -29,13 +30,9 @@ const CanvasWrapper = () => {
     (state: RootState) => state.mainStore.creatingElement
   )
 
-  const elementList = slides[slideIndex].elements
-
   const { viewportStyles } = useViewportSize(canvasRef)
-  const { isSelectVisible, selectPosition, updateSelectArea } = useSelectArea(
-    elementList,
-    viewportRef
-  )
+  const { isSelectVisible, selectPosition, updateSelectArea } =
+    useSelectArea(viewportRef)
   const { insertElement } = useInsertElement(viewportRef)
 
   const handleCanvasMouseDown = (e: React.MouseEvent) => {
@@ -66,7 +63,7 @@ const CanvasWrapper = () => {
         }}
       >
         <div className="operates">
-          {elementList.map(element => (
+          {slides[slideIndex].elements.map(element => (
             <Operate
               key={element.id}
               element={element}
@@ -81,7 +78,7 @@ const CanvasWrapper = () => {
           ref={viewportRef}
         >
           {isSelectVisible && <SelectArea selectPosition={selectPosition} />}
-          {elementList.map(element => (
+          {slides[slideIndex].elements.map(element => (
             <Element element={element} key={element.id} />
           ))}
         </div>

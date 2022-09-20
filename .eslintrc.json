@@ -30,6 +30,6 @@
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "prettier/prettier": "warn",
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "error"
   }
 }

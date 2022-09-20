@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { PPTTextElement } from '@/types/slides'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
@@ -19,33 +19,50 @@ const TextComponent: React.FC<TextComponentProps> = props => {
   const isScaling = useSelector((state: RootState) => state.mainStore.isScaling)
   const textComponent = useRef<HTMLDivElement>(null)
 
-  // 当text元素发生缩放变化时，判断是否在缩放和高度是否变化，同时满足时更新元素高度
-  const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
-    if (!textComponent.current) {
-      return
-    }
-    const contentRect = entries[0].contentRect
-
-    if (element.height !== contentRect.height && !isScaling) {
-      dispatch.slidesStore.UPDATE_ELEMENT(element.id, {
-        height: contentRect.height
-      })
-    }
-  }
-
-  const resizeObserver = new ResizeObserver(updateTextElementHeight)
-
-  // 监听isScaling，使监听事件中的isScaling始终保持最新状态
+  const isScalingRef = useRef<boolean>(false)
+  const elementRef = useRef<PPTTextElement>()
   useEffect(() => {
-    if (textComponent.current) {
-      resizeObserver.observe(textComponent.current)
+    isScalingRef.current = isScaling
+  }, [isScaling])
+  useEffect(() => {
+    elementRef.current = element
+  }, [element])
+
+  // 当text元素发生缩放变化时，判断是否在缩放和高度是否变化，同时满足时更新元素高度
+  const updateTextElementHeight = useCallback(
+    (entries: ResizeObserverEntry[]) => {
+      if (!textComponent.current) {
+        return
+      }
+      const contentRect = entries[0].contentRect
+
+      if (
+        elementRef.current &&
+        elementRef.current.height !== contentRect.height &&
+        !isScalingRef.current
+      ) {
+        dispatch.slidesStore.UPDATE_ELEMENT(elementRef.current.id, {
+          height: contentRect.height
+        })
+      }
+    },
+    [dispatch.slidesStore]
+  )
+
+  const resizeObserver = new ResizeObserver(updateTextElementHeight) // eslint-disable-line
+
+  // 绑定监听事件
+  useEffect(() => {
+    const textComponentHTML = textComponent.current
+    if (textComponentHTML) {
+      resizeObserver.observe(textComponentHTML)
     }
     return () => {
-      if (textComponent.current) {
-        resizeObserver.unobserve(textComponent.current)
+      if (textComponentHTML) {
+        resizeObserver.unobserve(textComponentHTML)
       }
     }
-  }, [isScaling])
+  }, [resizeObserver])
 
   const handleTextComponentMD = (e: React.MouseEvent) => {
     e.stopPropagation()

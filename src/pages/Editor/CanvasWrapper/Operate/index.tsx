@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
@@ -22,6 +22,12 @@ const Operate: React.FC<OperateProps> = props => {
   const canvasScale = useSelector(
     (state: RootState) => state.mainStore.canvasScale
   )
+  const canvasScaleRef = useRef<number>()
+
+  useEffect(() => {
+    canvasScaleRef.current = canvasScale
+  }, [canvasScale])
+
   const scaleTop = element.top * canvasScale
   const scaleLeft = element.left * canvasScale
   const scaleWidth = element.width * canvasScale
