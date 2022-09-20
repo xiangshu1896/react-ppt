@@ -51,6 +51,16 @@ const updateElement = (
   return setCurrentSlideNewEls(state, newElements)
 }
 
+const deleteSelectedElements = (
+  state: SlidesState,
+  selectedElementIdList: string[]
+) => {
+  const elements = [...state.slides[state.slideIndex].elements].filter(
+    element => !selectedElementIdList.includes(element.id)
+  )
+  return setCurrentSlideNewEls(state, elements)
+}
+
 const slidesState: SlidesState = {
   slides,
   slideIndex: 0
@@ -95,6 +105,16 @@ const slidesStore = createModel<RootModel>()({
     },
     ADD_NEW_ELEMENT(state: SlidesState, element: PPTElement) {
       const slides = addNewElement(state, element)
+      return {
+        ...state,
+        slides
+      }
+    },
+    DELETE_SELECTED_ELEMENTS(
+      state: SlidesState,
+      selectedElementIdList: string[]
+    ) {
+      const slides = deleteSelectedElements(state, selectedElementIdList)
       return {
         ...state,
         slides

@@ -79,6 +79,7 @@ const TextComponent: React.FC<TextComponentProps> = props => {
       }}
       ref={textComponent}
       onMouseDown={handleTextComponentMD}
+      onKeyDown={e => e.stopPropagation()}
     >
       <div className="rotate-wrapper">
         <div

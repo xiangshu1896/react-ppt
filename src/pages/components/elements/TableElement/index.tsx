@@ -152,6 +152,7 @@ const TableComponent: React.FC<TableComponentProps> = props => {
         height: element.height
       }}
       onMouseDown={handleTableComponentMD}
+      onKeyDown={e => e.stopPropagation()}
     >
       <Slate editor={editor} value={initialValue}>
         <Editable renderElement={renderElement} />

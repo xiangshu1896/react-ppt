@@ -3,9 +3,12 @@ import EditorHeader from './EditorHeader'
 import Toolbar from './Toolbar'
 import LeftBar from './LeftBar'
 import CanvasWrapper from './CanvasWrapper'
+import useGlobalEvent from './CanvasWrapper/hooks/useGlobalEvent'
 import './index.scss'
 
 const Editor = () => {
+  useGlobalEvent()
+
   return (
     <div className="ppt-editor">
       <EditorHeader />
