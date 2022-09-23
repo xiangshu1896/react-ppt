@@ -22,6 +22,7 @@ export default () => {
       )
       return
     }
+    dispatch.slidesStore.DELETE_SELECTED_SLIDE()
   }, [dispatch.slidesStore])
 
   const keydownListener = useCallback(

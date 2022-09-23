@@ -23,13 +23,17 @@ const sortableOptions = {
 const LeftBar = () => {
   const dispatch = useDispatch<Dispatch>()
   const slides = useSelector((state: RootState) => state.slidesStore.slides)
-  const storeSlideIndex = useSelector(
-    (state: RootState) => state.slidesStore.slideIndex
+  const selectedSlideIndexList = useSelector(
+    (state: RootState) => state.slidesStore.selectedSlideIndexList
   )
 
-  const selectSlide = (slideIndex: number) => {
+  const selectSlide = (e: React.MouseEvent, slideIndex: number) => {
     dispatch.mainStore.CLEAR_SELECTED_ELEMENT_ID_LIST()
     dispatch.slidesStore.SET_SLIDE_INDEX(slideIndex)
+    dispatch.slidesStore.CHANGE_SELECTED_SLIDE_INDEX_LIST(
+      slideIndex,
+      e.ctrlKey || e.metaKey
+    )
   }
 
   const setList = (slides: Slide[]) => {
@@ -42,6 +46,7 @@ const LeftBar = () => {
       return
     }
     dispatch.slidesStore.SET_SLIDE_INDEX(newIndex)
+    dispatch.slidesStore.SET_SELECTED_SLIDE_INDEX_LIST([newIndex])
   }
 
   const handleAddSlideClick = () => {
@@ -61,18 +66,21 @@ const LeftBar = () => {
           setList={setList}
           onEnd={handleDragEnd}
           {...sortableOptions}
+          disabled={selectedSlideIndexList.length > 1}
           className="sort-container"
         >
           {slides.map((slide, slideIndex) => (
             <div
               key={slide.id}
               className="slide"
-              onMouseDown={() => selectSlide(slideIndex)}
+              onMouseDown={e => selectSlide(e, slideIndex)}
             >
               <div className="slide-num">{slideIndex + 1}</div>
               <div
                 className={`slide-content ${
-                  slideIndex === storeSlideIndex ? 'checked-slide' : ''
+                  selectedSlideIndexList.includes(slideIndex)
+                    ? 'checked-slide'
+                    : ''
                 }`}
               ></div>
             </div>
