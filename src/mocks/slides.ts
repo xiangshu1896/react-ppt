@@ -12,7 +12,12 @@ export const slides: Slide[] = [
         top: 90,
         width: 100,
         height: 42,
-        content: '测试文本',
+        content: [
+          {
+            type: 'paragraph',
+            children: [{ text: '测试文本' }]
+          }
+        ],
         defaultColor: '#303133'
       },
       {

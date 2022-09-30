@@ -42,7 +42,7 @@ export default () => {
   /**
    * 创建文本元素
    */
-  const createTextElement = (position: CommonElementPosition, content = '') => {
+  const createTextElement = (position: CommonElementPosition, text = '') => {
     const { left, top, width, height } = position
     createElement({
       type: 'text',
@@ -51,7 +51,12 @@ export default () => {
       top,
       width,
       height,
-      content,
+      content: [
+        {
+          type: 'paragraph',
+          children: [{ text }]
+        }
+      ],
       defaultColor: '#333'
     })
   }

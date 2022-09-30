@@ -55,7 +55,7 @@ export type PPTElement =
  */
 export interface PPTTextElement extends PPTBaseElement {
   type: 'text'
-  content: string
+  content: (CustomElement | CustomText)[]
   defaultColor: string
   outline?: PPTElementOutline
 }

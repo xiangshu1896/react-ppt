@@ -6,6 +6,7 @@ import { ReactSortable, Sortable } from 'react-sortablejs'
 import './index.scss'
 import { Slide } from '@/types/slides'
 import _ from 'lodash'
+import Preview from '@/pages/components/preview'
 
 const pageList = <div> </div>
 
@@ -82,7 +83,9 @@ const LeftBar = () => {
                     ? 'checked-slide'
                     : ''
                 }`}
-              ></div>
+              >
+                <Preview slide={slide} />
+              </div>
             </div>
           ))}
         </ReactSortable>

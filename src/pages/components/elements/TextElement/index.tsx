@@ -94,11 +94,7 @@ const TextComponent: React.FC<TextComponentProps> = props => {
             outline={element.outline}
           /> */}
           {/* 集成富文本 */}
-          <SlateEditor
-            element={element}
-            value={element.content}
-            defaultColor={element.defaultColor}
-          />
+          <SlateEditor element={element} defaultColor={element.defaultColor} />
         </div>
       </div>
     </div>

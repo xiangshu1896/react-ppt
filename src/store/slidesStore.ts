@@ -120,7 +120,7 @@ const slidesStore = createModel<RootModel>()({
     },
     DELETE_SELECTED_SLIDE(state: SlidesState) {
       let newSlides = [...state.slides]
-      let newSelectedSlideIndexList: number[] = []
+      let newSelectedSlideIndexList: number[] = [0]
       let newSlideIndex = 0
 
       // 至少留一个页面

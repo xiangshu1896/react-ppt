@@ -1,0 +1,11 @@
+.base-text-element {
+  position: absolute;
+  box-sizing: border-box;
+  .text-content {
+    padding: 5px;
+    user-select: none;
+    .slate-editor {
+      cursor: text;
+    }
+  }
+}

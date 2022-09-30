@@ -1,24 +1,28 @@
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState, Dispatch } from '@/store'
 import { createEditor, Descendant, BaseEditor } from 'slate'
-import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
+import {
+  Slate,
+  Editable,
+  withReact,
+  ReactEditor,
+  DefaultElement
+} from 'slate-react'
 import useSelectElement from '@/pages/Editor/CanvasWrapper/hooks/useSelectElement'
 import { PPTTextElement } from '@/types/slides'
 
 interface SlateEditorProps {
   element: PPTTextElement
-  value: string
   defaultColor: string
 }
 
 const SlateEditor: React.FC<SlateEditorProps> = props => {
-  const { element, value, defaultColor } = props
+  const { element, defaultColor } = props
 
-  const initialValue: Descendant[] = [
-    {
-      type: 'paragraph',
-      children: [{ text: value }]
-    }
-  ]
+  const dispatch = useDispatch<Dispatch>()
+
+  const initialValue: Descendant[] = element.content
 
   const [editor] = useState(() => withReact(createEditor()))
 
@@ -29,9 +33,15 @@ const SlateEditor: React.FC<SlateEditorProps> = props => {
     selectElement(e, element)
   }
 
+  const handleSlateChange = (value: Descendant[]) => {
+    dispatch.slidesStore.UPDATE_ELEMENT(element.id, {
+      content: value
+    })
+  }
+
   return (
     <div className="slate-editor" onMouseDown={handleSlateMD}>
-      <Slate editor={editor} value={initialValue}>
+      <Slate editor={editor} value={initialValue} onChange={handleSlateChange}>
         <Editable />
       </Slate>
     </div>
