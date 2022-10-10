@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState, Dispatch } from '@/store'
 import { PPTTableElement, CustomElement, CustomText } from '@/types/slides'
 import {
   Slate,
@@ -91,6 +93,8 @@ const withTables = (editor: Editor) => {
 const TableComponent: React.FC<TableComponentProps> = props => {
   const { element } = props
 
+  const dispatch = useDispatch<Dispatch>()
+
   const { selectElement } = useSelectElement()
   const initialValue: Descendant[] = element.content
 
@@ -142,6 +146,12 @@ const TableComponent: React.FC<TableComponentProps> = props => {
     selectElement(e, element)
   }
 
+  const handleSlateChange = (value: Descendant[]) => {
+    dispatch.slidesStore.UPDATE_ELEMENT(element.id, {
+      content: value
+    })
+  }
+
   return (
     <div
       className="element-table-component"
@@ -154,7 +164,7 @@ const TableComponent: React.FC<TableComponentProps> = props => {
       onMouseDown={handleTableComponentMD}
       onKeyDown={e => e.stopPropagation()}
     >
-      <Slate editor={editor} value={initialValue}>
+      <Slate editor={editor} value={initialValue} onChange={handleSlateChange}>
         <Editable renderElement={renderElement} />
       </Slate>
     </div>

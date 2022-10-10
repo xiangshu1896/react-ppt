@@ -1,0 +1,12 @@
+.base-shape-element {
+  position: absolute;
+  .rotate-wrapper {
+    width: 100%;
+    height: 100%;
+    .shape-content {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+  }
+}

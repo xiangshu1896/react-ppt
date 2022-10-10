@@ -1,0 +1,26 @@
+.base-table-element {
+  position: absolute;
+  color: $regularText;
+  div[role='textbox'] {
+    height: 100%;
+  }
+  .table-container {
+    height: 100%;
+    .table-row {
+      display: flex;
+      .table-cell {
+        padding: 5px;
+        border-right: 1px solid $darkBorder;
+        border-bottom: 1px solid $darkBorder;
+        &:first-child {
+          border-left: 1px solid $darkBorder;
+        }
+      }
+      &:first-child {
+        .table-cell {
+          border-top: 1px solid $darkBorder;
+        }
+      }
+    }
+  }
+}

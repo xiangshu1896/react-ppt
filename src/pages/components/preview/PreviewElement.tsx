@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import TextElement from '@/pages/components/elements/TextElement/BaseTextElement'
-import ImageElement from '@/pages/components/elements/ImageElement'
-import ShapeElement from '@/pages/components/elements/ShapeElement'
-import TableElement from '@/pages/components/elements/TableElement'
+import ImageElement from '@/pages/components/elements/ImageElement/BaseImageElement'
+import ShapeElement from '@/pages/components/elements/ShapeElement/BaseShapeElement'
+import TableElement from '@/pages/components/elements/TableElement/BaseTableElement'
 
 interface PreviewElementProps {
   element: PPTElement
