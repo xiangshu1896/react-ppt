@@ -1,12 +1,10 @@
 import React from 'react'
 import { Dropdown, Menu } from 'antd'
+import useScreen from '@/pages/FullScreen/hooks/useScreen'
+import type { MenuProps } from 'antd'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import SvgIcon from '@/components/SvgIcon'
 import './index.scss'
-
-const getMenu = (menuItem: ItemType[]) => {
-  return <Menu items={menuItem} />
-}
 
 const folderMenuItems = [
   {
@@ -46,12 +44,29 @@ const playMenuItems = [
 ]
 
 const EditorHeader = () => {
+  const { enterScreening } = useScreen()
+
+  const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
+    console.log('key', key)
+    switch (key) {
+      case 'from-start':
+        enterScreening()
+        break
+      default:
+        break
+    }
+  }
+
+  const getMenu = (menuItem: ItemType[]): MenuProps => {
+    return { items: menuItem, onClick: handleMenuClick }
+  }
+
   return (
     <div className="editor-header">
       <div className="left">文档名称</div>
       <div className="right">
         <Dropdown
-          overlay={getMenu(folderMenuItems)}
+          menu={getMenu(folderMenuItems)}
           trigger={['click']}
           overlayClassName="editor-header-dropdown"
         >
@@ -61,7 +76,7 @@ const EditorHeader = () => {
           </div>
         </Dropdown>
         <Dropdown
-          overlay={getMenu(editorMenuItems)}
+          menu={getMenu(editorMenuItems)}
           trigger={['click']}
           overlayClassName="editor-header-dropdown"
         >
@@ -71,7 +86,7 @@ const EditorHeader = () => {
           </div>
         </Dropdown>
         <Dropdown
-          overlay={getMenu(playMenuItems)}
+          menu={getMenu(playMenuItems)}
           trigger={['click']}
           overlayClassName="editor-header-dropdown"
         >

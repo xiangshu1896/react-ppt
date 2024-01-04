@@ -8,9 +8,13 @@
   z-index: 1;
   user-select: none;
   .add-page {
-    text-align: center;
+    display: flex;
+    justify-content: center;
     padding: 10px 0;
     background-color: #fff;
+    .ant-space-compact-block {
+      width: auto;
+    }
     .ant-btn {
       font-size: 12px;
       color: $regularText;

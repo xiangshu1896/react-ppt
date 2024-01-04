@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { PPTTextElement } from '@/types/slides'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
+import _ from 'lodash'
 import SlateEditor from '../SlateEditor'
 import useSelectElement from '@/pages/Editor/CanvasWrapper/hooks/useSelectElement'
 import './index.scss'
@@ -29,7 +30,7 @@ const TextComponent: React.FC<TextComponentProps> = props => {
   }, [element])
 
   // 当text元素发生缩放变化时，判断是否在缩放和高度是否变化，同时满足时更新元素高度
-  const updateTextElementHeight = useCallback(
+  const updateTextElementHeight = _.debounce(
     (entries: ResizeObserverEntry[]) => {
       if (!textComponent.current) {
         return
@@ -46,13 +47,12 @@ const TextComponent: React.FC<TextComponentProps> = props => {
         })
       }
     },
-    [dispatch.slidesStore]
+    10
   )
-
-  const resizeObserver = new ResizeObserver(updateTextElementHeight) // eslint-disable-line
 
   // 绑定监听事件
   useEffect(() => {
+    const resizeObserver = new ResizeObserver(updateTextElementHeight)
     const textComponentHTML = textComponent.current
     if (textComponentHTML) {
       resizeObserver.observe(textComponentHTML)
@@ -62,7 +62,7 @@ const TextComponent: React.FC<TextComponentProps> = props => {
         resizeObserver.unobserve(textComponentHTML)
       }
     }
-  }, [resizeObserver])
+  }, [updateTextElementHeight])
 
   const handleTextComponentMD = (e: React.MouseEvent) => {
     e.stopPropagation()

@@ -8,6 +8,8 @@ interface MainState {
   selectedElementIdList: string[] // 选中的元素列表
   creatingElement: CreatingElement | null // 正在创建的元素
   isScaling: boolean // 是否正在缩放
+  isScreening: boolean // 是否是全屏播放模式
+  currentPlaySlideIndex: number // 当前播放的索引
 }
 
 // 工具函数
@@ -22,7 +24,9 @@ const mainState: MainState = {
   canvasPercentage: 90,
   selectedElementIdList: [],
   creatingElement: null,
-  isScaling: false
+  isScaling: false,
+  isScreening: false,
+  currentPlaySlideIndex: 0
 }
 
 const mainStore = createModel<RootModel>()({
@@ -81,6 +85,18 @@ const mainStore = createModel<RootModel>()({
       return {
         ...state,
         selectedElementIdList
+      }
+    },
+    SET_IS_SCREENING(state: MainState, isScreening: boolean) {
+      return {
+        ...state,
+        isScreening
+      }
+    },
+    SET_CURRENT_PLAY_SLIDE(state: MainState, currentPlaySlideIndex: number) {
+      return {
+        ...state,
+        currentPlaySlideIndex
       }
     }
   },

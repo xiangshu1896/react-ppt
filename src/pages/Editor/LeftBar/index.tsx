@@ -8,8 +8,6 @@ import { Slide } from '@/types/slides'
 import _ from 'lodash'
 import Preview from '@/pages/components/preview'
 
-const pageList = <div> </div>
-
 // 拖拽组件配置项
 const sortableOptions = {
   animation: 200,
@@ -57,7 +55,7 @@ const LeftBar = () => {
   return (
     <div className="left-bar">
       <div className="add-page">
-        <Dropdown.Button overlay={pageList} onClick={handleAddSlideClick}>
+        <Dropdown.Button menu={{}} onClick={handleAddSlideClick}>
           添加页面
         </Dropdown.Button>
       </div>

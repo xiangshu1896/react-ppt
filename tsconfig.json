@@ -18,7 +18,6 @@
     "noImplicitThis": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
     "allowUnusedLabels": false,
     "noUnusedParameters": false,

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Dispatch } from '@/store'
 import { Dropdown, Space, Menu, Upload, Modal, Form, InputNumber } from 'antd'
 import { MenuInfo } from 'rc-menu/lib/interface'
-import type { UploadProps } from 'antd'
+import type { UploadProps, MenuProps } from 'antd'
 import { getImageDataUrl } from '@/utils/image'
 import SvgIcon from '@/components/SvgIcon'
 import useCreateElement from '@/hooks/useCreateElement'
@@ -50,7 +50,7 @@ const AddTool = () => {
     setIsShapeDPVisible(flag)
   }
 
-  const shapeMenu = (
+  const shapeMenu = (): ReactNode => (
     <div className="shape-menu">
       {SHAPE_LIST_ITEM.map(shapeListItem => (
         <div
@@ -191,7 +191,7 @@ const AddTool = () => {
       </div>
       <Modal
         title="自定义行列数"
-        visible={isModalVisible}
+        open={isModalVisible}
         width={500}
         onOk={handleTableFormOk}
         onCancel={handleTableFormCancel}
@@ -227,69 +227,67 @@ const AddTool = () => {
     </div>
   )
 
-  const addMoreMenu = (
-    <Menu
-      onClick={handleMenuClick}
-      items={[
-        {
-          key: 'text',
-          label: (
-            <>
-              <SvgIcon.Text width="15" height="15" />
-              <div className="dropdown-title">文本框</div>
-            </>
-          )
-        },
-        {
-          key: 'shape',
-          label: (
-            <>
-              <SvgIcon.Shape width="15" height="15" />
-              <div className="dropdown-title">形状</div>
-            </>
-          ),
-          children: [
-            {
-              key: 'shape-menu',
-              label: shapeMenu
-            }
-          ],
-          popupClassName: 'shape-menu-children'
-        },
-        {
-          key: 'image',
-          label: (
-            <Upload {...uplodProps}>
-              <SvgIcon.Pic width="15" height="15" />
-              <div className="dropdown-title">图片</div>
-            </Upload>
-          )
-        },
-        {
-          key: 'table',
-          label: (
-            <>
-              <SvgIcon.Table width="15" height="15" />
-              <div className="dropdown-title">表格</div>
-            </>
-          ),
-          children: [
-            {
-              key: 'table-menu',
-              label: tableMenu
-            }
-          ],
-          popupClassName: 'table-menu-children'
-        }
-      ]}
-    />
-  )
+  const addMoreMenu: MenuProps = {
+    onClick: handleMenuClick,
+    items: [
+      {
+        key: 'text',
+        label: (
+          <>
+            <SvgIcon.Text width="15" height="15" />
+            <div className="dropdown-title">文本框</div>
+          </>
+        )
+      },
+      {
+        key: 'shape',
+        label: (
+          <>
+            <SvgIcon.Shape width="15" height="15" />
+            <div className="dropdown-title">形状</div>
+          </>
+        ),
+        children: [
+          {
+            key: 'shape-menu',
+            label: shapeMenu()
+          }
+        ],
+        popupClassName: 'shape-menu-children'
+      },
+      {
+        key: 'image',
+        label: (
+          <Upload {...uplodProps}>
+            <SvgIcon.Pic width="15" height="15" />
+            <div className="dropdown-title">图片</div>
+          </Upload>
+        )
+      },
+      {
+        key: 'table',
+        label: (
+          <>
+            <SvgIcon.Table width="15" height="15" />
+            <div className="dropdown-title">表格</div>
+          </>
+        ),
+        children: [
+          {
+            key: 'table-menu',
+            label: tableMenu
+          }
+        ],
+        popupClassName: 'table-menu-children'
+      }
+    ]
+  }
 
   return (
     <div className="add-tool">
       <Space>
         <Dropdown
-          overlay={addMoreMenu}
+          menu={addMoreMenu}
           trigger={['click']}
           overlayClassName="add-more-dropdown"
         >
@@ -302,10 +300,10 @@ const AddTool = () => {
           <SvgIcon.Text width="15" height="15" />
         </div>
         <Dropdown
-          overlay={shapeMenu}
+          dropdownRender={shapeMenu}
           trigger={['click']}
-          onVisibleChange={handleShapeDPVisibleChange}
-          visible={isShapeDPVisible}
+          onOpenChange={handleShapeDPVisibleChange}
+          open={isShapeDPVisible}
           overlayClassName="shape-menu-dropdown"
         >
           <div className="tool-icon icon-shape">

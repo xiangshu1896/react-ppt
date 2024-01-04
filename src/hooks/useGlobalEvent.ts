@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, Dispatch } from '@/store'
 import { KEYS } from '@/configs/hotkey'
+import useScreen from '@/pages/FullScreen/hooks/useScreen'
 
 export default () => {
   const dispatch = useDispatch<Dispatch>()
   const selectedElementIdList = useSelector(
     (state: RootState) => state.mainStore.selectedElementIdList
   )
+  const { closeScreening } = useScreen()
 
   const selectedElementIdListRef = useRef<string[]>()
 
@@ -40,10 +42,18 @@ export default () => {
     [remove]
   )
 
+  const fullScreenListener = useCallback(() => {
+    if (!document.fullscreenElement) {
+      dispatch.mainStore.SET_IS_SCREENING(false)
+    }
+  }, [dispatch.mainStore])
+
   useEffect(() => {
     document.addEventListener('keydown', keydownListener)
+    document.addEventListener('fullscreenchange', fullScreenListener)
     return () => {
       document.removeEventListener('keydown', keydownListener)
+      document.removeEventListener('fullscreenchange', fullScreenListener)
     }
-  }, [keydownListener])
+  }, [keydownListener, fullScreenListener])
 }

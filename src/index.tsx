@@ -4,7 +4,7 @@ import App from '@/App'
 import { Provider } from 'react-redux'
 import store from './store'
 
-import 'antd/dist/antd.min.css'
+import 'antd/dist/reset.css'
 import '@/assets/styles/global.scss'
 
 const container = document.getElementById('root')

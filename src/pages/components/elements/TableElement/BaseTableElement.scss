@@ -1,7 +1,7 @@
 .base-table-element {
   position: absolute;
   color: $regularText;
-  div[role='textbox'] {
+  div[data-slate-editor='true'] {
     height: 100%;
   }
   .table-container {
